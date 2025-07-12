@@ -32,7 +32,9 @@ Chain: Base
     "@coinbase/onchainkit": "latest",
     "@coinbase/wallet-sdk": "latest",
     "lucide-react": "latest",
-    "tailwindcss": "^3.0.0"
+    "tailwindcss": "^3.0.0",
+    "@upstash/redis": "^1.20.0",
+    "@upstash/ratelimit": "^0.4.0"
   }
 }
 ```
@@ -76,14 +78,17 @@ alphabet-affirmations/
 │   │   ├── utils/
 │   │   │   ├── affirmationGenerator.ts
 │   │   │   ├── nftMetadata.ts
+│   │   │   ├── redis.ts            # Upstash Redis client
 │   │   │   └── validation.ts
 │   │   ├── hooks/
 │   │   │   ├── useAffirmations.ts
 │   │   │   ├── useNFTCollection.ts
-│   │   │   └── useMiniKit.ts
+│   │   │   ├── useMiniKit.ts
+│   │   │   └── useAnalytics.ts     # Redis-based analytics
 │   │   └── types/
 │   │       ├── affirmation.ts
 │   │       ├── nft.ts
+│   │       ├── analytics.ts        # Analytics types
 │   │       └── user.ts
 │   ├── data/
 │   │   └── mockNFTs.ts             # Development data
@@ -411,7 +416,79 @@ export interface NFTMetadata {
 }
 ```
 
-### 4. Core Utilities
+### 4. Redis Integration
+
+#### Redis Client Setup
+```typescript
+// src/lib/utils/redis.ts
+import { Redis } from '@upstash/redis';
+import { Ratelimit } from '@upstash/ratelimit';
+
+export const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+
+// Rate limiting for generation requests
+export const ratelimit = new Ratelimit({
+  redis: redis,
+  limiter: Ratelimit.slidingWindow(5, "60 s"), // 5 requests per minute
+  analytics: true,
+});
+
+// Session management
+export async function saveSession(sessionId: string, data: any) {
+  await redis.setex(`session:${sessionId}`, 3600, JSON.stringify(data)); // 1 hour TTL
+}
+
+export async function getSession(sessionId: string) {
+  const data = await redis.get(`session:${sessionId}`);
+  return data ? JSON.parse(data as string) : null;
+}
+
+// Analytics tracking
+export async function trackEvent(event: string, metadata?: any) {
+  const timestamp = Date.now();
+  await redis.zadd(`events:${event}`, timestamp, JSON.stringify({ timestamp, ...metadata }));
+}
+
+// Cache generated affirmations temporarily
+export async function cacheAffirmations(childName: string, affirmations: any[]) {
+  const key = `affirmations:${childName.toLowerCase()}`;
+  await redis.setex(key, 300, JSON.stringify(affirmations)); // 5 minutes cache
+}
+
+export async function getCachedAffirmations(childName: string) {
+  const key = `affirmations:${childName.toLowerCase()}`;
+  const cached = await redis.get(key);
+  return cached ? JSON.parse(cached as string) : null;
+}
+```
+
+#### Analytics Hook
+```typescript
+// src/lib/hooks/useAnalytics.ts
+import { useCallback } from 'react';
+import { trackEvent } from '../utils/redis';
+
+export function useAnalytics() {
+  const track = useCallback(async (event: string, metadata?: any) => {
+    try {
+      await trackEvent(event, metadata);
+    } catch (error) {
+      console.error('Analytics tracking failed:', error);
+    }
+  }, []);
+
+  return { track };
+}
+
+// Usage in components:
+// const { track } = useAnalytics();
+// track('affirmation_generated', { childName: name, letterCount: 26 });
+// track('nft_minted', { childName: name, transactionHash: hash });
+// track('reading_completed', { childName: name, timeSpent: duration });
+```
 
 #### Affirmation Generator
 ```typescript
@@ -685,6 +762,10 @@ NEXT_PUBLIC_NFT_CONTRACT_ADDRESS=0x...
 NEXT_PUBLIC_PINATA_API_KEY=your_pinata_key
 NEXT_PUBLIC_PINATA_SECRET_KEY=your_pinata_secret
 NEXT_PUBLIC_BASE_RPC_URL=https://mainnet.base.org
+
+# Upstash Redis
+UPSTASH_REDIS_REST_URL=https://your-redis-url.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your_redis_token
 ```
 
 ---
