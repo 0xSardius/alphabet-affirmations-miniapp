@@ -3,23 +3,98 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
+  /* Primary Colors */
+  --bg-primary: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+
+  /* Component Colors */
+  --bg-card: #111827;
+  --bg-input: #111827;
+  --border-default: #374151;
+  --border-subtle: #4b5563;
+  --border-focus: #ffffff;
+
+  /* Interactive States */
+  --bg-button-primary: #ffffff;
+  --text-button-primary: #000000;
+  --bg-button-secondary: transparent;
+  --bg-hover: #1f2937;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111111;
-    --foreground: #ffffff;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-black text-white font-sans;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  .font-serif {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: "Inter", system-ui, sans-serif;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: "Geist", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 80%;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Ensure minimum touch targets for mobile */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* High contrast focus indicators */
+*:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize for bedtime reading */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Safe area support for mobile devices */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Ensure proper spacing for Farcaster miniapp */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
 }
