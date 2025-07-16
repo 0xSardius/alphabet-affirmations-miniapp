@@ -1,19 +1,20 @@
 "use client"
 
-import { useState } from "react"
-import { HomeView } from "@/components/home-view"
-import { LibraryView } from "@/components/library-view"
-import { ReaderPage } from "@/components/reader-page"
-import { AffirmationCard } from "@/components/affirmation-card"
-import { Input } from "@/components/input"
-import { Button } from "@/components/button"
-import { Card } from "@/components/card"
-import { Header } from "@/components/header"
-import { ShareButton } from "@/components/share-button"
-import { AddMiniAppBanner } from "@/components/add-miniapp-banner"
-import { MintingDialog } from "@/components/minting-dialog"
-import { AuthFallback } from "@/components/auth-fallback"
-import { AlphabetGenerator } from "@/components/alphabet-generator"
+import { useState, useEffect } from "react"
+import { useMiniKit } from "@coinbase/onchainkit/minikit"
+import { HomeView } from "./components/home-view"
+import { LibraryView } from "./components/library-view"
+import { ReaderPage } from "./components/reader-page"
+import { AffirmationCard } from "./components/affirmation-card"
+import { Input } from "./components/input"
+import { Button } from "./components/button"
+import { Card } from "./components/card"
+import { Header } from "./components/header"
+import { ShareButton } from "./components/share-button"
+import { AddMiniAppBanner } from "./components/add-miniapp-banner"
+import { MintingDialog } from "./components/minting-dialog"
+import { AuthFallback } from "./components/auth-fallback"
+import { AlphabetGenerator } from "./components/alphabet-generator"
 
 // Sample affirmation words for each letter
 const affirmationWords = {
@@ -48,6 +49,7 @@ const affirmationWords = {
 type View = "home" | "create" | "library" | "reader" | "alphabet" | "generator"
 
 export default function AlphabetAffirmations() {
+  const { setFrameReady, isFrameReady } = useMiniKit()
   const [currentView, setCurrentView] = useState<View>("home")
   const [childName, setChildName] = useState("")
   const [currentLetter, setCurrentLetter] = useState(0)
@@ -56,6 +58,13 @@ export default function AlphabetAffirmations() {
   const [showAddBanner, setShowAddBanner] = useState(true)
   const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
+
+  // Initialize MiniKit when component mounts
+  useEffect(() => {
+    if (!isFrameReady) {
+      setFrameReady()
+    }
+  }, [isFrameReady, setFrameReady])
 
   // Farcaster profile state
   const [farcasterProfile] = useState({
