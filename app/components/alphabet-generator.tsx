@@ -17,7 +17,11 @@ type Affirmation = {
 
 type GeneratorState = "input" | "generating" | "preview"
 
-export function AlphabetGenerator() {
+interface AlphabetGeneratorProps {
+  onComplete?: (affirmations: Affirmation[], name: string) => void
+}
+
+export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
   const { context } = useMiniKit()
   const [childName, setChildName] = useState("")
   const [state, setState] = useState<GeneratorState>("input")
@@ -132,6 +136,11 @@ export function AlphabetGenerator() {
     setShowMintingDialog(false)
     // Could redirect to full alphabet view or success page here
     console.log("Minting completed for:", childName)
+    
+    // Call onComplete callback to notify parent component
+    if (onComplete) {
+      onComplete(affirmations, childName)
+    }
   }
 
   const handleCustomize = () => {

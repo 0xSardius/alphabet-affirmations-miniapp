@@ -16,7 +16,7 @@ import { MintingDialog } from "./components/minting-dialog"
 import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
 
-// Sample affirmation words for each letter
+// Sample affirmation words for fallback (when no generated alphabet exists)
 const affirmationWords = {
   A: "Amazing",
   B: "Brave",
@@ -48,6 +48,11 @@ const affirmationWords = {
 
 type View = "home" | "create" | "library" | "reader" | "alphabet" | "generator"
 
+type GeneratedAffirmation = {
+  letter: string
+  word: string
+}
+
 export default function AlphabetAffirmations() {
   const { setFrameReady, isFrameReady } = useMiniKit()
   const [currentView, setCurrentView] = useState<View>("home")
@@ -58,6 +63,9 @@ export default function AlphabetAffirmations() {
   const [showAddBanner, setShowAddBanner] = useState(true)
   const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
+  
+  // Generated affirmations from AlphabetGenerator
+  const [generatedAffirmations, setGeneratedAffirmations] = useState<GeneratedAffirmation[]>([])
 
   // Initialize MiniKit when component mounts
   useEffect(() => {
@@ -92,13 +100,16 @@ export default function AlphabetAffirmations() {
     },
   ])
 
-  const letters = Object.keys(affirmationWords)
-  const currentLetterData = letters[currentLetter]
-  const currentWord = affirmationWords[currentLetterData as keyof typeof affirmationWords]
+  // Use generated affirmations if available, otherwise fall back to sample data
+  const currentAffirmations = generatedAffirmations.length > 0 ? generatedAffirmations : 
+    Object.entries(affirmationWords).map(([letter, word]) => ({ letter, word }))
+
+  const currentLetterData = currentAffirmations[currentLetter]
 
   const handleCreateNew = () => {
     setCurrentView("generator")
     setChildName("")
+    setGeneratedAffirmations([]) // Clear any existing generated affirmations
   }
 
   const handleNameSubmit = () => {
@@ -120,7 +131,7 @@ export default function AlphabetAffirmations() {
   }
 
   const handleNext = () => {
-    if (currentLetter < letters.length - 1) {
+    if (currentLetter < currentAffirmations.length - 1) {
       setCurrentLetter(currentLetter + 1)
     }
   }
@@ -140,6 +151,13 @@ export default function AlphabetAffirmations() {
     }
   }
 
+  // Handler for when alphabet generation is complete
+  const handleAlphabetGenerated = (affirmations: GeneratedAffirmation[], name: string) => {
+    setGeneratedAffirmations(affirmations)
+    setChildName(name)
+    setCurrentView("alphabet")
+  }
+
   if (currentView === "home") {
     return (
       <>
@@ -152,7 +170,7 @@ export default function AlphabetAffirmations() {
   }
 
   if (currentView === "generator") {
-    return <AlphabetGenerator />
+    return <AlphabetGenerator onComplete={handleAlphabetGenerated} />
   }
 
   if (currentView === "create") {
@@ -200,6 +218,7 @@ export default function AlphabetAffirmations() {
           </div>
         </div>
 
+        {/* Minting Dialog */}
         <MintingDialog
           childName={childName}
           isOpen={showMintingDialog}
@@ -212,33 +231,12 @@ export default function AlphabetAffirmations() {
 
   if (currentView === "library") {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Header
-          title="Your Collection"
-          showBack={true}
-          onBack={() => setCurrentView("home")}
-          username={farcasterProfile.username}
-          avatarUrl={farcasterProfile.avatarUrl}
-          isConnected={farcasterProfile.isConnected}
-          isLoadingProfile={farcasterProfile.isLoading}
-        />
-
-        {showAddBanner && (
-          <AddMiniAppBanner
-            isAdded={isMiniAppAdded}
-            onAdd={() => setIsMiniAppAdded(true)}
-            onDismiss={() => setShowAddBanner(false)}
-          />
-        )}
-
-        <div className="px-6 py-4">
-          <LibraryView
-            collections={collections}
-            onSelectCollection={handleSelectCollection}
-            onCreateNew={handleCreateNew}
-          />
-        </div>
-      </div>
+      <LibraryView
+        collections={collections}
+        onSelectCollection={handleSelectCollection}
+        onCreateNew={handleCreateNew}
+        onBack={() => setCurrentView("home")}
+      />
     )
   }
 
@@ -259,11 +257,11 @@ export default function AlphabetAffirmations() {
           <div className="max-w-md mx-auto">
             {/* Alphabet List */}
             <Card className="space-y-2 mb-8">
-              {letters.map((letter, index) => (
+              {currentAffirmations.map((affirmation, index) => (
                 <AffirmationCard
-                  key={letter}
-                  letter={letter}
-                  word={affirmationWords[letter as keyof typeof affirmationWords]}
+                  key={affirmation.letter}
+                  letter={affirmation.letter}
+                  word={affirmation.word}
                   childName={childName}
                   onClick={() => {
                     setCurrentLetter(index)
@@ -297,11 +295,11 @@ export default function AlphabetAffirmations() {
           isLoadingProfile={farcasterProfile.isLoading}
         />
         <ReaderPage
-          letter={currentLetterData}
-          word={currentWord}
+          letter={currentLetterData?.letter || "A"}
+          word={currentLetterData?.word || "Amazing"}
           childName={childName}
           currentPage={currentLetter + 1}
-          totalPages={letters.length}
+          totalPages={currentAffirmations.length}
           onNext={handleNext}
           onPrevious={handlePrevious}
           className="pt-0"
