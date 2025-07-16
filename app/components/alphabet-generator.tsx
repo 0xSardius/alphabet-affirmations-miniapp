@@ -7,53 +7,80 @@ import { PartialPreview } from "./partial-preview"
 import { PreviewSkeleton } from "./preview-skeleton"
 import { MintingDialog } from "./minting-dialog"
 import { Header } from "./header"
+import { generateRandomAlphabet, generateConsistentAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
 
-// Sample affirmation words for demonstration
-const sampleAffirmations = [
-  { letter: "A", word: "Amazing" },
-  { letter: "B", word: "Brave" },
-  { letter: "C", word: "Creative" },
-  { letter: "D", word: "Determined" },
-  { letter: "E", word: "Excellent" },
-  { letter: "F", word: "Fantastic" },
-  { letter: "G", word: "Generous" },
-  { letter: "H", word: "Happy" },
-  { letter: "I", word: "Intelligent" },
-  { letter: "J", word: "Joyful" },
-  { letter: "K", word: "Kind" },
-  { letter: "L", word: "Loving" },
-  { letter: "M", word: "Magnificent" },
-  { letter: "N", word: "Nice" },
-  { letter: "O", word: "Outstanding" },
-  { letter: "P", word: "Positive" },
-  { letter: "Q", word: "Quick" },
-  { letter: "R", word: "Remarkable" },
-  { letter: "S", word: "Strong" },
-  { letter: "T", word: "Talented" },
-  { letter: "U", word: "Unique" },
-  { letter: "V", word: "Valuable" },
-  { letter: "W", word: "Wonderful" },
-  { letter: "X", word: "eXtraordinary" },
-  { letter: "Y", word: "Young" },
-  { letter: "Z", word: "Zealous" },
-]
+type Affirmation = {
+  letter: string
+  word: string
+}
 
 type GeneratorState = "input" | "generating" | "preview"
 
 export function AlphabetGenerator() {
   const [childName, setChildName] = useState("")
   const [state, setState] = useState<GeneratorState>("input")
-  const [affirmations, setAffirmations] = useState(sampleAffirmations)
+  const [affirmations, setAffirmations] = useState<Affirmation[]>([])
   const [showMintingDialog, setShowMintingDialog] = useState(false)
 
+  // Name validation function
+  const validateName = (name: string): { isValid: boolean; error?: string } => {
+    const trimmedName = name.trim()
+    
+    if (!trimmedName) {
+      return { isValid: false, error: "Name is required" }
+    }
+    
+    if (trimmedName.length < 2) {
+      return { isValid: false, error: "Name must be at least 2 characters" }
+    }
+    
+    if (trimmedName.length > 20) {
+      return { isValid: false, error: "Name must be 20 characters or less" }
+    }
+    
+    // Check for letters only (allow spaces, hyphens, apostrophes)
+    const nameRegex = /^[a-zA-Z\s\-\']+$/
+    if (!nameRegex.test(trimmedName)) {
+      return { isValid: false, error: "Name can only contain letters, spaces, hyphens, and apostrophes" }
+    }
+    
+    return { isValid: true }
+  }
+
   const handleGenerate = async () => {
-    if (!childName.trim()) return
+    const validation = validateName(childName)
+    if (!validation.isValid) {
+      // In a real app, you'd show this error to the user
+      console.error("Name validation failed:", validation.error)
+      return
+    }
 
     setState("generating")
 
-    // Simulate AI generation delay
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    // Simulate AI generation delay (realistic timing)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
+    // Generate consistent alphabet using child's name as seed
+    // Convert name to number seed for consistent generation
+    const nameToSeed = (name: string): number => {
+      let hash = 0
+      for (let i = 0; i < name.length; i++) {
+        const char = name.charCodeAt(i)
+        hash = ((hash << 5) - hash) + char
+        hash = hash & hash // Convert to 32-bit integer
+      }
+      return Math.abs(hash)
+    }
+    
+    const generatedWords = generateConsistentAlphabet(nameToSeed(childName.trim()))
+    
+    // Convert to affirmations format
+    const newAffirmations: Affirmation[] = Object.entries(generatedWords).map(([letter, word]) => ({
+      letter,
+      word
+    }))
+
+    setAffirmations(newAffirmations)
     setState("preview")
   }
 
@@ -74,10 +101,35 @@ export function AlphabetGenerator() {
     // Handle customization logic - could open a word selection interface
   }
 
+  // Word regeneration functionality
+  const regenerateWord = (letter: string) => {
+    const newWord = getRandomWordForLetter(letter)
+    setAffirmations(prev => 
+      prev.map(affirmation => 
+        affirmation.letter === letter 
+          ? { ...affirmation, word: newWord }
+          : affirmation
+      )
+    )
+  }
+
+  const regenerateAllWords = () => {
+    const newWords = generateRandomAlphabet()
+    const newAffirmations: Affirmation[] = Object.entries(newWords).map(([letter, word]) => ({
+      letter,
+      word
+    }))
+    setAffirmations(newAffirmations)
+  }
+
   const handleBack = () => {
     setState("input")
     setChildName("")
+    setAffirmations([])
   }
+
+  // Get validation for current name
+  const nameValidation = validateName(childName)
 
   if (state === "input") {
     return (
@@ -99,13 +151,14 @@ export function AlphabetGenerator() {
                 value={childName}
                 onChange={setChildName}
                 maxLength={20}
+                error={!nameValidation.isValid ? nameValidation.error : undefined}
               />
 
               <Button
                 variant="primary"
                 size="lg"
                 onClick={handleGenerate}
-                disabled={!childName.trim()}
+                disabled={!nameValidation.isValid}
                 className="w-full"
               >
                 Generate Preview
