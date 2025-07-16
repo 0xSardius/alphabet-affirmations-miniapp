@@ -36,6 +36,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [x] ✅ Implement affirmation generation logic
 - [x] ✅ Add name validation (2-20 characters)
 - [x] ✅ Add word regeneration functionality
+- [x] ✅ Add user identifier approach (FID + name for uniqueness)
 - [ ] 📝 Test generator with different names
 
 ### 2.2 Reading Experience

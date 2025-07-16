@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useMiniKit } from "@coinbase/onchainkit/minikit"
 import { Input } from "./input"
 import { Button } from "./button"
 import { PartialPreview } from "./partial-preview"
@@ -17,6 +18,7 @@ type Affirmation = {
 type GeneratorState = "input" | "generating" | "preview"
 
 export function AlphabetGenerator() {
+  const { context } = useMiniKit()
   const [childName, setChildName] = useState("")
   const [state, setState] = useState<GeneratorState>("input")
   const [affirmations, setAffirmations] = useState<Affirmation[]>([])
@@ -47,10 +49,44 @@ export function AlphabetGenerator() {
     return { isValid: true }
   }
 
+  // Generate personalized seed using child name + parent's FID
+  const generatePersonalizedSeed = (childName: string, parentFid: number): number => {
+    const combined = `${childName.toLowerCase()}-${parentFid}`
+    let hash = 0
+    
+    for (let i = 0; i < combined.length; i++) {
+      const char = combined.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash // Convert to 32-bit integer
+    }
+    
+    return Math.abs(hash)
+  }
+
+  // Fallback seed for development/testing (using session-based approach)
+  const getFallbackSeed = (childName: string): number => {
+    // Get or create a session identifier
+    let sessionId = sessionStorage.getItem('alphabet_session_id')
+    if (!sessionId) {
+      sessionId = crypto.randomUUID()
+      sessionStorage.setItem('alphabet_session_id', sessionId)
+    }
+    
+    const combined = `${childName.toLowerCase()}-${sessionId}`
+    let hash = 0
+    
+    for (let i = 0; i < combined.length; i++) {
+      const char = combined.charCodeAt(i)
+      hash = ((hash << 5) - hash) + char
+      hash = hash & hash
+    }
+    
+    return Math.abs(hash)
+  }
+
   const handleGenerate = async () => {
     const validation = validateName(childName)
     if (!validation.isValid) {
-      // In a real app, you'd show this error to the user
       console.error("Name validation failed:", validation.error)
       return
     }
@@ -60,19 +96,21 @@ export function AlphabetGenerator() {
     // Simulate AI generation delay (realistic timing)
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    // Generate consistent alphabet using child's name as seed
-    // Convert name to number seed for consistent generation
-    const nameToSeed = (name: string): number => {
-      let hash = 0
-      for (let i = 0; i < name.length; i++) {
-        const char = name.charCodeAt(i)
-        hash = ((hash << 5) - hash) + char
-        hash = hash & hash // Convert to 32-bit integer
-      }
-      return Math.abs(hash)
+    // Generate personalized seed
+    const trimmedName = childName.trim()
+    let seed: number
+    
+    if (context?.user?.fid) {
+      // Use parent's FID for personalized but consistent generation
+      seed = generatePersonalizedSeed(trimmedName, context.user.fid)
+      console.log(`Generated personalized alphabet for ${trimmedName} (Parent FID: ${context.user.fid})`)
+    } else {
+      // Fallback for development/testing
+      seed = getFallbackSeed(trimmedName)
+      console.log(`Generated alphabet for ${trimmedName} (Development mode)`)
     }
     
-    const generatedWords = generateConsistentAlphabet(nameToSeed(childName.trim()))
+    const generatedWords = generateConsistentAlphabet(seed)
     
     // Convert to affirmations format
     const newAffirmations: Affirmation[] = Object.entries(generatedWords).map(([letter, word]) => ({
@@ -142,6 +180,11 @@ export function AlphabetGenerator() {
               <p className="text-gray-400 font-sans">
                 Enter your child{"'"}s name to generate their unique alphabet affirmations
               </p>
+              {context?.user?.username && (
+                <p className="text-sm text-gray-500 font-sans">
+                  Creating for @{context.user.username}{"'"}s family
+                </p>
+              )}
             </div>
 
             <div className="space-y-6">
