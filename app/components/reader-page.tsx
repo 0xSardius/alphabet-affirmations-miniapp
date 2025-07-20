@@ -31,9 +31,14 @@ export function ReaderPage({
 
   return (
     <div className={cn("flex flex-col min-h-screen bg-black text-white", "px-6 py-8 justify-between", className)}>
-      {/* Progress Dots */}
-      <div className="flex justify-center">
-        <ProgressDots total={totalPages} current={currentPage} />
+      {/* Enhanced Progress Indicators */}
+      <div className="flex justify-center py-4">
+        <ProgressDots 
+          total={totalPages} 
+          current={currentPage}
+          currentLetter={letter}
+          showTextIndicator={true}
+        />
       </div>
 
       {/* Main Content */}
@@ -42,28 +47,49 @@ export function ReaderPage({
         <p className="text-gray-400 text-lg font-sans text-center">{childName} is...</p>
 
         {/* Letter Circle */}
-        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
-          <span className="text-black font-bold text-4xl font-sans">{letter.toUpperCase()}</span>
+        <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
+          <span className="text-black font-bold text-5xl font-sans">{letter.toUpperCase()}</span>
         </div>
 
-        {/* Word */}
-        <h1 className="text-5xl font-serif font-medium text-center leading-tight">{word}</h1>
+        {/* Word - Enhanced for bedtime reading */}
+        <h1 className="text-6xl font-serif font-medium text-center leading-tight max-w-xs">
+          {word}
+        </h1>
+
+        {/* Complete affirmation for context */}
+        <div className="text-center">
+          <p className="text-xl text-gray-300 font-sans">
+            "{childName} is <span className="text-white font-medium">{word}</span>"
+          </p>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center">
+      {/* Touch-Friendly Navigation */}
+      <div className="flex justify-between items-center pt-4">
         <Button
           variant="ghost"
           size="lg"
           onClick={onPrevious}
           disabled={!canGoPrevious}
-          className="flex items-center gap-2"
+          className={cn(
+            "flex items-center gap-2 h-12 px-6",
+            !canGoPrevious ? "opacity-30" : "hover:bg-white/10"
+          )}
         >
           <ChevronLeft className="w-5 h-5" />
           Previous
         </Button>
 
-        <Button variant="ghost" size="lg" onClick={onNext} disabled={!canGoNext} className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="lg" 
+          onClick={onNext} 
+          disabled={!canGoNext} 
+          className={cn(
+            "flex items-center gap-2 h-12 px-6",
+            !canGoNext ? "opacity-30" : "hover:bg-white/10"
+          )}
+        >
           Next
           <ChevronRight className="w-5 h-5" />
         </Button>
