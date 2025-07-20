@@ -2,7 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "./button"
-import { ProgressDots } from "./progress-dots"
 import { cn } from "@/lib/utils"
 
 interface ReaderPageProps {
@@ -31,16 +30,6 @@ export function ReaderPage({
 
   return (
     <div className={cn("flex flex-col min-h-screen bg-black text-white", "px-6 py-8 justify-between", className)}>
-      {/* Enhanced Progress Indicators */}
-      <div className="flex justify-center py-4">
-        <ProgressDots 
-          total={totalPages} 
-          current={currentPage}
-          currentLetter={letter}
-          showTextIndicator={true}
-        />
-      </div>
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center space-y-8">
         {/* Child Name */}
@@ -51,17 +40,10 @@ export function ReaderPage({
           <span className="text-black font-bold text-5xl font-sans">{letter.toUpperCase()}</span>
         </div>
 
-        {/* Word - Enhanced for bedtime reading */}
-        <h1 className="text-6xl font-serif font-medium text-center leading-tight max-w-xs">
+        {/* Word - Clean and prominent */}
+        <h1 className="text-6xl font-serif font-medium text-center leading-tight">
           {word}
         </h1>
-
-        {/* Complete affirmation for context */}
-        <div className="text-center">
-          <p className="text-xl text-gray-300 font-sans">
-            "{childName} is <span className="text-white font-medium">{word}</span>"
-          </p>
-        </div>
       </div>
 
       {/* Touch-Friendly Navigation */}

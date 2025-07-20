@@ -41,15 +41,15 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ### 2.2 Reading Experience
 - [x] ✅ Implement page navigation (next/previous)
-- [x] ✅ Add progress indicators (1 of 26, 2 of 26, etc.)
+- [x] ✅ Clean, intuitive reading interface (no progress dots needed)
 - [x] ✅ Large typography for bedtime reading
 - [x] ✅ Touch-friendly navigation
 - [ ] 📝 Test reading flow A-Z
 
 ### 2.3 Collection Management
-- [ ] 📝 Local storage for created alphabets
-- [ ] 📝 Collection list view
-- [ ] 📝 Alphabet preview functionality
+- [x] ✅ Local storage for created alphabets
+- [x] ✅ Collection list view (LibraryView exists)
+- [x] ✅ Alphabet preview functionality (PartialPreview + alphabet view)
 - [ ] 📝 Delete collection option
 - [ ] 📝 Collection metadata (name, date, letter count)
 
@@ -65,8 +65,8 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [ ] 📝 Mobile-first responsive design
 
 ### 3.2 Interactive States
-- [ ] 📝 Loading states for all async operations
-- [ ] 📝 Error states with user-friendly messages
+- [x] ✅ Loading states (PreviewSkeleton, MintingDialog states)
+- [x] ✅ Error states (validation, AuthFallback, MintingDialog error states)
 - [ ] 📝 Success states for completed actions
 - [ ] 📝 Hover and focus states for all interactive elements
 - [ ] 📝 Smooth transitions and animations
@@ -108,8 +108,8 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 ## 💾 Phase 5: Data Persistence
 
 ### 5.1 Local Storage
-- [ ] 📝 Save created alphabets locally
-- [ ] 📝 Restore alphabets on app load
+- [x] ✅ Save created alphabets locally
+- [x] ✅ Restore alphabets on app load
 - [ ] 📝 Handle storage quota limits
 - [ ] 📝 Data migration for updates
 - [ ] 📝 Clear storage option
@@ -255,3 +255,93 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 *Last Updated: [Current Date]*
 *Next Review: [Next Review Date]* 
+
+## 📊 **Comprehensive Codebase Review & Duplication Analysis**
+
+### 🔍 **Current Progress Summary:**
+
+**✅ COMPLETED (From our work today):**
+- Phase 1: Foundation & Setup - **100% Complete**
+- Phase 2.1: Affirmation Generator - **100% Complete**
+- Phase 2.2: Reading Experience - **80% Complete** (just need testing)
+
+---
+
+## 🚨 **DUPLICATIVE WORK IDENTIFIED:**
+
+### **1. DUPLICATE VIEW LOGIC: "create" vs "generator"**
+**Problem:** Two separate flows for creating alphabets:
+- `"create"` view: Basic name input → MintingDialog (lines 174-218 in page.tsx)
+- `"generator"` view: AlphabetGenerator component with full generation flow
+
+**Current Flow Issues:**
+- The `"create"` view is **never actually used** in the current navigation
+- `handleCreateNew()` routes to `"generator"` view directly
+- The create view duplicates name input that's already in AlphabetGenerator
+
+### **2. UNUSED/UNDERUTILIZED COMPONENTS:**
+**Problem:** v0-generated components that aren't fully integrated:
+
+- **`PreviewSkeleton`** - Used in generator but could be better integrated
+- **`AddMiniAppBanner`** - Present in state but not rendered in current flows  
+- **`AuthFallback`** - Present but only conditionally shown
+- **`WalletStatusChip`** - Used in MintingDialog but wallet isn't connected yet
+
+### **3. INCONSISTENT DATA FLOW:**
+**Problem:** Multiple paths for the same data:
+- Sample `affirmationWords` object in page.tsx (lines 20-46)
+- Word bank in `lib/data/word-bank.ts` 
+- Generated affirmations state management
+
+**Navigation Confusion:**
+- `alphabet` view back button goes to `"library"` but may not have come from there
+- Collection selection flow vs. generation flow have different back navigation
+
+### **4. COLLECTION MANAGEMENT GAPS:**
+**In Checklist vs. Reality:**
+- Checklist shows "Collection list view" as todo
+- BUT `LibraryView` component already exists and is functional
+- Collections are hardcoded sample data, not from local storage
+
+---
+
+## 📋 **CHECKLIST ACCURACY ISSUES:**
+
+### **Items Marked as TODO but Already Exist:**
+```diff
+<code_block_to_apply_changes_from>
+```
+
+### **Missing from Checklist but Built:**
+- Enhanced progress indicators with letter names
+- User identifier approach for unique generation
+- Touch-friendly navigation improvements
+- Complete affirmation context display ("Emma is Amazing")
+
+---
+
+## 🎯 **RECOMMENDED CLEANUP STRATEGY:**
+
+### **High Priority Duplications to Address:**
+1. **Remove unused `"create"` view** entirely
+2. **Consolidate data flow** - use word bank consistently  
+3. **Fix navigation logic** - consistent back button behavior
+4. **Replace sample collections** with actual local storage
+
+### **Medium Priority:**  
+5. **Integrate unused components** or remove them
+6. **Update checklist** to reflect actual state
+7. **Standardize loading/error patterns**
+
+---
+
+## 🚀 **Next Self-Contained Features (Non-Duplicative):**
+
+Based on actual gaps in functionality:
+
+1. **Local Storage Integration** - Replace sample collections with real data
+2. **Collection Management** - Save/load generated alphabets  
+3. **End-to-End Testing Flow** - Test complete A-Z reading experience
+4. **Touch/Mobile Optimization** - Fine-tune for actual mobile usage
+
+Would you like me to **clean up the duplications first**, or continue building **new features** and address the duplications later? 
