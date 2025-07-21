@@ -269,15 +269,11 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ## 🚨 **DUPLICATIVE WORK IDENTIFIED:**
 
-### **1. DUPLICATE VIEW LOGIC: "create" vs "generator"**
-**Problem:** Two separate flows for creating alphabets:
-- `"create"` view: Basic name input → MintingDialog (lines 174-218 in page.tsx)
-- `"generator"` view: AlphabetGenerator component with full generation flow
-
-**Current Flow Issues:**
-- The `"create"` view is **never actually used** in the current navigation
-- `handleCreateNew()` routes to `"generator"` view directly
-- The create view duplicates name input that's already in AlphabetGenerator
+### **1. ~~DUPLICATE VIEW LOGIC~~ ✅ RESOLVED**
+~~**Problem:** Two separate flows for creating alphabets~~
+- ✅ **FIXED:** Removed unused `"create"` view entirely
+- ✅ **CLEANED:** Removed dead code (~50 lines): handlers, state, imports
+- ✅ **SIMPLIFIED:** Single creation flow through `AlphabetGenerator`
 
 ### **2. UNUSED/UNDERUTILIZED COMPONENTS:**
 **Problem:** v0-generated components that aren't fully integrated:
@@ -323,7 +319,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 ## 🎯 **RECOMMENDED CLEANUP STRATEGY:**
 
 ### **High Priority Duplications to Address:**
-1. **Remove unused `"create"` view** entirely
+1. ✅ ~~**Remove unused `"create"` view** entirely~~ **COMPLETED**
 2. **Consolidate data flow** - use word bank consistently  
 3. **Fix navigation logic** - consistent back button behavior
 4. **Replace sample collections** with actual local storage

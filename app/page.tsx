@@ -6,13 +6,11 @@ import { HomeView } from "./components/home-view"
 import { LibraryView } from "./components/library-view"
 import { ReaderPage } from "./components/reader-page"
 import { AffirmationCard } from "./components/affirmation-card"
-import { Input } from "./components/input"
 import { Button } from "./components/button"
 import { Card } from "./components/card"
 import { Header } from "./components/header"
 import { ShareButton } from "./components/share-button"
 import { AddMiniAppBanner } from "./components/add-miniapp-banner"
-import { MintingDialog } from "./components/minting-dialog"
 import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
 
@@ -46,7 +44,7 @@ const affirmationWords = {
   Z: "Zealous",
 }
 
-type View = "home" | "create" | "library" | "reader" | "alphabet" | "generator"
+type View = "home" | "library" | "reader" | "alphabet" | "generator"
 
 type GeneratedAffirmation = {
   letter: string
@@ -61,7 +59,6 @@ export default function AlphabetAffirmations() {
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null)
   const [isMiniAppAdded, setIsMiniAppAdded] = useState(false)
   const [showAddBanner, setShowAddBanner] = useState(true)
-  const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
   
   // Generated affirmations from AlphabetGenerator
@@ -112,19 +109,6 @@ export default function AlphabetAffirmations() {
     setGeneratedAffirmations([]) // Clear any existing generated affirmations
   }
 
-  const handleNameSubmit = () => {
-    if (childName.trim()) {
-      setShowMintingDialog(true)
-    }
-  }
-
-  const handleMint = async () => {
-    // Simulate minting process
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setShowMintingDialog(false)
-    setCurrentView("alphabet")
-  }
-
   const handleStartReading = () => {
     setCurrentLetter(0)
     setCurrentView("reader")
@@ -171,62 +155,6 @@ export default function AlphabetAffirmations() {
 
   if (currentView === "generator") {
     return <AlphabetGenerator onComplete={handleAlphabetGenerated} />
-  }
-
-  if (currentView === "create") {
-    return (
-      <>
-        <div className="min-h-screen bg-black text-white">
-          <Header
-            title="Create New"
-            showBack={true}
-            onBack={() => setCurrentView("home")}
-            username={farcasterProfile.username}
-            avatarUrl={farcasterProfile.avatarUrl}
-            isConnected={farcasterProfile.isConnected}
-            isLoadingProfile={farcasterProfile.isLoading}
-          />
-          <div className="px-6 py-8 flex flex-col justify-center">
-            <div className="max-w-sm mx-auto w-full space-y-8">
-              <div className="text-center space-y-4">
-                <h1 className="text-2xl font-serif text-white">Create New Affirmations</h1>
-                <p className="text-gray-400 font-sans">
-                  Enter your child{"'"}s name to create personalized alphabet affirmations
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <Input
-                  label="Child's Name"
-                  placeholder="Enter name..."
-                  value={childName}
-                  onChange={setChildName}
-                  maxLength={20}
-                />
-
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onClick={handleNameSubmit}
-                  disabled={!childName.trim()}
-                  className="w-full"
-                >
-                  Create Alphabet
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Minting Dialog */}
-        <MintingDialog
-          childName={childName}
-          isOpen={showMintingDialog}
-          onClose={() => setShowMintingDialog(false)}
-          onMint={handleMint}
-        />
-      </>
-    )
   }
 
   if (currentView === "library") {
