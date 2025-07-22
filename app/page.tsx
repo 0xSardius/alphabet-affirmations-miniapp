@@ -13,6 +13,7 @@ import { ShareButton } from "./components/share-button"
 import { AddMiniAppBanner } from "./components/add-miniapp-banner"
 import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
+import { MiniKitLoadingScreen } from "./components/minikit-loading-screen"
 
 // Sample affirmation words for fallback (when no generated alphabet exists)
 const affirmationWords = {
@@ -140,6 +141,11 @@ export default function AlphabetAffirmations() {
     setGeneratedAffirmations(affirmations)
     setChildName(name)
     setCurrentView("alphabet")
+  }
+
+  // Show loading screen while MiniKit initializes
+  if (!isFrameReady) {
+    return <MiniKitLoadingScreen />
   }
 
   if (currentView === "home") {
