@@ -157,9 +157,7 @@ export default function AlphabetAffirmations() {
   }
 
   // Handler for completed minting
-  const handleMintingComplete = async () => {
-    // Simulate minting process
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+  const handleMintingComplete = () => {
     setShowMintingDialog(false)
     // Go to library view to see the new NFT
     setCurrentView("library")

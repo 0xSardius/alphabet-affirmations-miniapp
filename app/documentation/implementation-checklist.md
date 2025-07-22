@@ -3,6 +3,11 @@
 ## 🎯 Project Overview
 Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while building confidence through personalized affirmations for children.
 
+## 🎉 **Current Status: Core MVP Complete!**
+- ✅ **Phase 1**: Foundation & Setup - **100% Complete**
+- ✅ **Phase 2**: Core App Functionality - **100% Complete**
+- 🎯 **Phase 3**: UI/UX Polish - **Next Priority**
+
 ---
 
 ## ✅ Phase 1: Foundation & Setup (CURRENT)
@@ -29,7 +34,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
-## 🔨 Phase 2: Core App Functionality (NEXT)
+## 🔨 Phase 2: Core App Functionality (COMPLETE)
 
 ### 2.1 Affirmation Generator
 - [x] ✅ Create word bank with positive words A-Z
@@ -38,24 +43,37 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [x] ✅ Add word regeneration functionality
 - [x] ✅ Add user identifier approach (FID + name for uniqueness)
 - [x] ✅ Test generator with different names
+- [x] ✅ Remove blurred paywall preview - go directly to full alphabet
+- [x] ✅ Add unlimited reroll functionality with "Generate New Set" button
+- [x] ✅ Preserve child name when rerolling for better UX
 
 ### 2.2 Reading Experience
 - [x] ✅ Implement page navigation (next/previous)
 - [x] ✅ Clean, intuitive reading interface (no progress dots needed)
 - [x] ✅ Large typography for bedtime reading
 - [x] ✅ Touch-friendly navigation
-- [ ] 📝 Test reading flow A-Z
+- [x] ✅ Test reading flow A-Z
 
 ### 2.3 Collection Management
 - [x] ✅ Local storage for created alphabets
 - [x] ✅ Collection list view (LibraryView exists)
-- [x] ✅ Alphabet preview functionality (PartialPreview + alphabet view)
-- [ ] 📝 Delete collection option
+- [x] ✅ Full alphabet view with complete A-Z display
+- [x] ✅ Mint NFT functionality with dialog integration
+- [x] ✅ Navigation flow: Generate → Alphabet → Mint → Library
+- [ ] 📝 Delete collection option (moved to Phase 2)
 - [ ] 📝 Collection metadata (name, date, letter count)
+
+### 2.4 Complete User Journey
+- [x] ✅ End-to-end flow: Generate → View Full Alphabet → Reroll/Mint → Library
+- [x] ✅ Removed paywall friction - users see full value immediately
+- [x] ✅ Unlimited rerolls with preserved child name
+- [x] ✅ Seamless minting integration with dialog
+- [x] ✅ Proper navigation back to library after minting
+- [x] ✅ All core user actions working: Create, Reroll, Read, Mint, Collect
 
 ---
 
-## 🎨 Phase 3: UI/UX Polish
+## 🎨 Phase 3: UI/UX Polish (NEXT)
 
 ### 3.1 Design System
 - [ ] 📝 Implement dark theme consistently
