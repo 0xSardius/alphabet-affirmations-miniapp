@@ -14,6 +14,7 @@ import { AddMiniAppBanner } from "./components/add-miniapp-banner"
 import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
 import { MiniKitLoadingScreen } from "./components/minikit-loading-screen"
+import { MintingDialog } from "./components/minting-dialog"
 
 // Sample affirmation words for fallback (when no generated alphabet exists)
 const affirmationWords = {
@@ -61,6 +62,7 @@ export default function AlphabetAffirmations() {
   const [isMiniAppAdded, setIsMiniAppAdded] = useState(false)
   const [showAddBanner, setShowAddBanner] = useState(true)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
+  const [showMintingDialog, setShowMintingDialog] = useState(false)
   
   // Generated affirmations from AlphabetGenerator
   const [generatedAffirmations, setGeneratedAffirmations] = useState<GeneratedAffirmation[]>([])
@@ -143,6 +145,27 @@ export default function AlphabetAffirmations() {
     setCurrentView("alphabet")
   }
 
+  // Handler for rerolling the current alphabet
+  const handleReroll = () => {
+    // Go back to generator to reroll
+    setCurrentView("generator")
+  }
+
+  // Handler for minting the current alphabet
+  const handleMint = () => {
+    setShowMintingDialog(true)
+  }
+
+  // Handler for completed minting
+  const handleMintingComplete = async () => {
+    // Simulate minting process
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    setShowMintingDialog(false)
+    // Go to library view to see the new NFT
+    setCurrentView("library")
+    console.log("NFT minted successfully for:", childName)
+  }
+
   // Show loading screen while MiniKit initializes
   if (!isFrameReady) {
     return <MiniKitLoadingScreen />
@@ -160,7 +183,7 @@ export default function AlphabetAffirmations() {
   }
 
   if (currentView === "generator") {
-    return <AlphabetGenerator onComplete={handleAlphabetGenerated} />
+    return <AlphabetGenerator onComplete={handleAlphabetGenerated} initialChildName={childName} />
   }
 
   if (currentView === "library") {
@@ -210,9 +233,27 @@ export default function AlphabetAffirmations() {
               <Button variant="primary" size="lg" onClick={handleStartReading} className="w-full">
                 Start Reading
               </Button>
+              
+              <div className="flex gap-3">
+                <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
+                  Generate New Set
+                </Button>
+                
+                <Button variant="primary" size="md" onClick={handleMint} className="flex-1">
+                  Mint NFT ($5)
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Minting Dialog */}
+        <MintingDialog
+          childName={childName}
+          isOpen={showMintingDialog}
+          onClose={() => setShowMintingDialog(false)}
+          onMint={handleMintingComplete}
+        />
       </div>
     )
   }

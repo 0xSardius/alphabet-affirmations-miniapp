@@ -19,11 +19,12 @@ type GeneratorState = "input" | "generating" | "preview"
 
 interface AlphabetGeneratorProps {
   onComplete?: (affirmations: Affirmation[], name: string) => void
+  initialChildName?: string
 }
 
-export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
+export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGeneratorProps) {
   const { context } = useMiniKit()
-  const [childName, setChildName] = useState("")
+  const [childName, setChildName] = useState(initialChildName || "")
   const [state, setState] = useState<GeneratorState>("input")
   const [affirmations, setAffirmations] = useState<Affirmation[]>([])
   const [showMintingDialog, setShowMintingDialog] = useState(false)
