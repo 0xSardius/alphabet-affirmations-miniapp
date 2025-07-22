@@ -15,6 +15,7 @@ interface PartialPreviewProps {
   visibleCount?: number
   onMint: () => void
   onCustomize?: () => void
+  onReroll?: () => void
   isGenerating?: boolean
   className?: string
 }
@@ -25,6 +26,7 @@ export function PartialPreview({
   visibleCount = 5,
   onMint,
   onCustomize,
+  onReroll,
   isGenerating = false,
   className,
 }: PartialPreviewProps) {
@@ -148,6 +150,18 @@ export function PartialPreview({
 
       {/* Call-to-Action Section */}
       <div className="p-6 space-y-3 bg-gradient-to-t from-gray-900/50 to-transparent">
+        {/* Reroll Option */}
+        {onReroll && (
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={onReroll}
+            className="w-full text-sm hover:border-gray-500 hover:text-white transition-all duration-200"
+          >
+            Generate New Set
+          </Button>
+        )}
+
         {/* Primary CTA */}
         <Button
           variant="primary"

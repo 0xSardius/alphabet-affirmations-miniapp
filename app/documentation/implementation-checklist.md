@@ -340,4 +340,26 @@ Based on actual gaps in functionality:
 3. **End-to-End Testing Flow** - Test complete A-Z reading experience
 4. **Touch/Mobile Optimization** - Fine-tune for actual mobile usage
 
-Would you like me to **clean up the duplications first**, or continue building **new features** and address the duplications later? 
+Would you like me to **clean up the duplications first**, or continue building **new features** and address the duplications later?
+
+---
+
+## 🚀 **Phase 2: Optional Future Features (Post-MVP)**
+
+### **Collection Management Enhancements**
+- [ ] 📝 Add delete button for collection view
+- [ ] 📝 Collection sorting options (date, name, etc.)
+- [ ] 📝 Search/filter collections
+- [ ] 📝 Bulk collection actions
+
+### **Advanced Features**  
+- [ ] 📝 Custom word editing interface
+- [ ] 📝 Multiple alphabet themes/styles
+- [ ] 📝 Audio recordings of affirmations
+- [ ] 📝 Sharing individual letters vs full alphabets
+- [ ] 📝 Family sharing between parents
+
+### **Business Features**
+- [ ] 📝 Usage analytics and insights
+- [ ] 📝 Pricing experimentation tools
+- [ ] 📝 Referral/invite system 

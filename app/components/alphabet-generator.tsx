@@ -27,6 +27,7 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
   const [state, setState] = useState<GeneratorState>("input")
   const [affirmations, setAffirmations] = useState<Affirmation[]>([])
   const [showMintingDialog, setShowMintingDialog] = useState(false)
+  const [rerollCount, setRerollCount] = useState(0)
 
   // Name validation function
   const validateName = (name: string): { isValid: boolean; error?: string } => {
@@ -53,9 +54,9 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     return { isValid: true }
   }
 
-  // Generate personalized seed using child name + parent's FID
-  const generatePersonalizedSeed = (childName: string, parentFid: number): number => {
-    const combined = `${childName.toLowerCase()}-${parentFid}`
+  // Generate personalized seed using child name + parent's FID + reroll count
+  const generatePersonalizedSeed = (childName: string, parentFid: number, rerollCount: number = 0): number => {
+    const combined = `${childName.toLowerCase()}-${parentFid}-${rerollCount}`
     let hash = 0
     
     for (let i = 0; i < combined.length; i++) {
@@ -68,7 +69,7 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
   }
 
   // Fallback seed for development/testing (using session-based approach)
-  const getFallbackSeed = (childName: string): number => {
+  const getFallbackSeed = (childName: string, rerollCount: number = 0): number => {
     // Get or create a session identifier
     let sessionId = sessionStorage.getItem('alphabet_session_id')
     if (!sessionId) {
@@ -76,7 +77,7 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
       sessionStorage.setItem('alphabet_session_id', sessionId)
     }
     
-    const combined = `${childName.toLowerCase()}-${sessionId}`
+    const combined = `${childName.toLowerCase()}-${sessionId}-${rerollCount}`
     let hash = 0
     
     for (let i = 0; i < combined.length; i++) {
@@ -106,12 +107,12 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     
     if (context?.user?.fid) {
       // Use parent's FID for personalized but consistent generation
-      seed = generatePersonalizedSeed(trimmedName, context.user.fid)
-      console.log(`Generated personalized alphabet for ${trimmedName} (Parent FID: ${context.user.fid})`)
+      seed = generatePersonalizedSeed(trimmedName, context.user.fid, rerollCount)
+      console.log(`Generated personalized alphabet for ${trimmedName} (Parent FID: ${context.user.fid}, Reroll: ${rerollCount})`)
     } else {
       // Fallback for development/testing
-      seed = getFallbackSeed(trimmedName)
-      console.log(`Generated alphabet for ${trimmedName} (Development mode)`)
+      seed = getFallbackSeed(trimmedName, rerollCount)
+      console.log(`Generated alphabet for ${trimmedName} (Development mode, Reroll: ${rerollCount})`)
     }
     
     const generatedWords = generateConsistentAlphabet(seed)
@@ -148,6 +149,36 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     // Handle customization logic - could open a word selection interface
   }
 
+  const handleReroll = async () => {
+    setState("generating")
+    setRerollCount(prev => prev + 1)
+    
+    // Small delay for UX (shorter than initial generation)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+    
+    // Generate new alphabet with updated reroll count
+    const trimmedName = childName.trim()
+    let seed: number
+    const newRerollCount = rerollCount + 1
+    
+    if (context?.user?.fid) {
+      seed = generatePersonalizedSeed(trimmedName, context.user.fid, newRerollCount)
+      console.log(`Rerolled alphabet for ${trimmedName} (Reroll: ${newRerollCount})`)
+    } else {
+      seed = getFallbackSeed(trimmedName, newRerollCount)
+      console.log(`Rerolled alphabet for ${trimmedName} (Development mode, Reroll: ${newRerollCount})`)
+    }
+    
+    const generatedWords = generateConsistentAlphabet(seed)
+    const newAffirmations: Affirmation[] = Object.entries(generatedWords).map(([letter, word]) => ({
+      letter,
+      word
+    }))
+
+    setAffirmations(newAffirmations)
+    setState("preview")
+  }
+
   // Word regeneration functionality
   const regenerateWord = (letter: string) => {
     const newWord = getRandomWordForLetter(letter)
@@ -173,6 +204,7 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     setState("input")
     setChildName("")
     setAffirmations([])
+    setRerollCount(0) // Reset reroll count when starting fresh
   }
 
   // Get validation for current name
@@ -223,9 +255,10 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
   }
 
   if (state === "generating") {
+    const title = rerollCount > 0 ? "Generating New Set..." : "Generating..."
     return (
       <div className="min-h-screen bg-black text-white">
-        <Header title="Generating..." showBack onBack={handleBack} />
+        <Header title={title} showBack onBack={handleBack} />
         <div className="px-6 py-8">
           <PreviewSkeleton childName={childName} />
         </div>
@@ -243,6 +276,7 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
             affirmations={affirmations}
             onMint={handleMint}
             onCustomize={handleCustomize}
+            onReroll={handleReroll}
           />
         </div>
       </div>
