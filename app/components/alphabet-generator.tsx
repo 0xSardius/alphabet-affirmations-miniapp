@@ -124,7 +124,13 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     }))
 
     setAffirmations(newAffirmations)
-    setState("preview")
+    
+    // Skip the blurred preview paywall and go directly to full alphabet
+    if (onComplete) {
+      onComplete(newAffirmations, trimmedName)
+    } else {
+      setState("preview")
+    }
   }
 
   const handleMint = () => {
@@ -176,7 +182,13 @@ export function AlphabetGenerator({ onComplete }: AlphabetGeneratorProps) {
     }))
 
     setAffirmations(newAffirmations)
-    setState("preview")
+    
+    // Skip the blurred preview paywall and go directly to full alphabet
+    if (onComplete) {
+      onComplete(newAffirmations, trimmedName)
+    } else {
+      setState("preview")
+    }
   }
 
   // Word regeneration functionality
