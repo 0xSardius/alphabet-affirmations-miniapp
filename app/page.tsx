@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useMiniKit } from "@coinbase/onchainkit/minikit"
+import { useMiniKit, useAuthenticate } from "@coinbase/onchainkit/minikit"
 import { HomeView } from "./components/home-view"
 import { LibraryView } from "./components/library-view"
 import { ReaderPage } from "./components/reader-page"
@@ -54,7 +54,9 @@ type GeneratedAffirmation = {
 }
 
 export default function AlphabetAffirmations() {
-  const { setFrameReady, isFrameReady } = useMiniKit()
+  const { setFrameReady, isFrameReady, context } = useMiniKit()
+  const { signIn } = useAuthenticate()
+  
   const [currentView, setCurrentView] = useState<View>("home")
   const [childName, setChildName] = useState("")
   const [currentLetter, setCurrentLetter] = useState(0)
@@ -63,6 +65,10 @@ export default function AlphabetAffirmations() {
   const [showAddBanner, setShowAddBanner] = useState(true)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
   const [showMintingDialog, setShowMintingDialog] = useState(false)
+  
+  // Authentication state
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const [authError, setAuthError] = useState<string | null>(null)
   
   // Generated affirmations from AlphabetGenerator
   const [generatedAffirmations, setGeneratedAffirmations] = useState<GeneratedAffirmation[]>([])
@@ -74,13 +80,65 @@ export default function AlphabetAffirmations() {
     }
   }, [isFrameReady, setFrameReady])
 
-  // Farcaster profile state
-  const [farcasterProfile] = useState({
-    username: "sarah",
-    avatarUrl: "/placeholder.svg?height=24&width=24",
-    isConnected: true,
-    isLoading: false,
-  })
+  // Automatic authentication when app loads
+  useEffect(() => {
+    const attemptAuthentication = async () => {
+      // Check if user is already authenticated via context
+      if (context?.user) {
+        console.log('✅ User already authenticated:', {
+          fid: context.user.fid,
+          username: context.user.username,
+          pfpUrl: context.user.pfpUrl
+        })
+        setAuthError(null)
+        return
+      }
+
+      // If not authenticated and MiniKit is ready, attempt automatic sign-in
+      if (isFrameReady && !context?.user && !isAuthenticating) {
+        console.log('🔐 Starting automatic authentication...')
+        setIsAuthenticating(true)
+        setAuthError(null)
+        
+        try {
+          const result = await signIn()
+          console.log('🔐 Sign-in result:', result)
+
+          if (result) {
+            console.log('✅ Authentication successful')
+            // The context should update automatically, triggering a re-render
+          } else {
+            console.warn('⚠️ Authentication returned no result')
+            // Don't set error immediately - context might still update
+            setTimeout(() => {
+              if (!context?.user) {
+                setAuthError('Please sign in to continue')
+              }
+            }, 2000)
+          }
+        } catch (error) {
+          console.error('❌ Authentication error:', error)
+          setAuthError('Unable to authenticate. Please try again.')
+        } finally {
+          setTimeout(() => setIsAuthenticating(false), 1000) // Give context time to update
+        }
+      }
+    }
+
+    // Only attempt authentication once MiniKit is ready
+    if (isFrameReady) {
+      attemptAuthentication()
+    }
+  }, [isFrameReady, context?.user, signIn, isAuthenticating])
+
+  // Create profile object from real user data or fallback
+  const farcasterProfile = {
+    username: context?.user?.username || "user",
+    avatarUrl: context?.user?.pfpUrl || "/placeholder.svg?height=24&width=24",
+    isConnected: !!context?.user,
+    isLoading: isAuthenticating,
+    fid: context?.user?.fid,
+  }
 
   // Sample collections data
   const [collections] = useState([
@@ -164,9 +222,35 @@ export default function AlphabetAffirmations() {
     console.log("NFT minted successfully for:", childName)
   }
 
-  // Show loading screen while MiniKit initializes
+  // Show loading screen while MiniKit initializes or authenticating
   if (!isFrameReady) {
     return <MiniKitLoadingScreen />
+  }
+
+  // Show loading screen while authenticating
+  if (isAuthenticating) {
+    return <MiniKitLoadingScreen />
+  }
+
+  // Show auth error if authentication failed
+  if (authError && !context?.user) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+        <div className="text-center max-w-md">
+          <h2 className="text-xl font-serif text-white mb-4">Authentication Required</h2>
+          <p className="text-gray-400 font-sans mb-6">{authError}</p>
+          <Button 
+            variant="primary" 
+            onClick={() => {
+              setAuthError(null)
+              setIsAuthenticating(false)
+            }}
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   if (currentView === "home") {

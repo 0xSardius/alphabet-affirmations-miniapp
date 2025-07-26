@@ -5,8 +5,9 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ## 🎉 **Current Status: Core MVP Complete!**
 - ✅ **Phase 1**: Foundation & Setup - **100% Complete**
-- ✅ **Phase 2**: Core App Functionality - **100% Complete**
-- 🎯 **Phase 3**: UI/UX Polish - **Next Priority**
+- ✅ **Phase 2**: Core App Functionality - **100% Complete**  
+- ✅ **Phase 3**: UI/UX Polish - **~90% Complete (v0 built)**
+- 🎯 **Phase 4**: Authentication & Data Persistence - **Next Priority**
 
 ---
 
@@ -46,6 +47,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [x] ✅ Remove blurred paywall preview - go directly to full alphabet
 - [x] ✅ Add unlimited reroll functionality with "Generate New Set" button
 - [x] ✅ Preserve child name when rerolling for better UX
+- [x] ✅ Fix randomization function for proper seed-based variation
 
 ### 2.2 Reading Experience
 - [x] ✅ Implement page navigation (next/previous)
@@ -100,39 +102,57 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ## 🔗 Phase 4: MiniKit Features
 
-### 4.1 Frame Integration
-- [ ] 📝 Test app loads in Farcaster clients
-- [ ] 📝 Splash screen configuration
-- [ ] 📝 Frame metadata optimization
-- [ ] 📝 Add to frame functionality
-- [ ] 📝 Close frame behavior
+### 4.1 Authentication & User Context
+- [ ] 📝 Implement `useAuthenticate` hook for Farcaster sign-in
+- [ ] 📝 Replace hardcoded profile data with real user context
+- [ ] 📝 Handle authentication states (loading, error, success)
+- [ ] 📝 User session management and persistence
+- [ ] 📝 Personalized experience based on user FID
+- [ ] 📝 Profile display in header with real data
 
-### 4.2 Sharing & Social
-- [ ] 📝 Share button implementation
+### 4.2 Frame Integration
+- [ ] 📝 Test app loads in Farcaster clients
+- [ ] 📝 Fix splash screen configuration (environment variables)
+- [ ] 📝 Frame metadata optimization (.well-known/farcaster.json)
+- [ ] 📝 `useAddFrame` functionality for bookmarking
+- [ ] 📝 Close frame behavior with `useClose`
+
+### 4.3 Sharing & Social
+- [ ] 📝 `useComposeCast` for sharing alphabets
 - [ ] 📝 Social media preview cards
-- [ ] 📝 Cast integration for sharing alphabets
 - [ ] 📝 Frame embed optimization
 - [ ] 📝 Test sharing flow
+- [ ] 📝 `useOpenUrl` for external links
 
-### 4.3 Authentication (Optional)
-- [ ] 📝 Farcaster profile integration
-- [ ] 📝 User context from MiniKit
-- [ ] 📝 Profile display in header
-- [ ] 📝 Personalized experience
-- [ ] 📝 User session management
+### 4.4 Backend Infrastructure (Redis)
+- [ ] 📝 Evaluate Redis necessity (notifications, frame tracking)
+- [ ] 📝 Set up Upstash Redis if needed
+- [ ] 📝 Notification proxy at `/api/notification`
+- [ ] 📝 Webhook handling for frame events
+- [ ] 📝 Data persistence strategy (localStorage vs Redis)
 
 ---
 
-## 💾 Phase 5: Data Persistence
+## 💾 Phase 5: Data Persistence & NFT Integration
 
-### 5.1 Local Storage
-- [x] ✅ Save created alphabets locally
-- [x] ✅ Restore alphabets on app load
+### 5.1 Local Storage (Priority)
+- [ ] 📝 **CRITICAL**: Replace hardcoded sample collections with real localStorage
+- [ ] 📝 **CRITICAL**: Save generated alphabets when created
+- [ ] 📝 **CRITICAL**: Load user's actual collection on app start
 - [ ] 📝 Handle storage quota limits
 - [ ] 📝 Data migration for updates
 - [ ] 📝 Clear storage option
 
-### 5.2 Cloud Storage (Future)
+### 5.2 NFT Integration (Core Value Prop)
+- [ ] 📝 **CRITICAL**: Replace simulated minting with real blockchain interaction
+- [ ] 📝 **CRITICAL**: OnchainKit wallet connection
+- [ ] 📝 **CRITICAL**: Deploy NFT contract to Base
+- [ ] 📝 **CRITICAL**: $5 minting functionality
+- [ ] 📝 NFT metadata generation and IPFS storage
+- [ ] 📝 Transaction error handling
+- [ ] 📝 Gas estimation and transaction status
+
+### 5.3 Cloud Storage (Future)
 - [ ] 📝 Redis integration for user data
 - [ ] 📝 Sync across devices
 - [ ] 📝 Backup and restore
@@ -141,7 +161,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
-## 🎯 Phase 6: NFT Integration (Future)
+## 🎯 Phase 6: Advanced Features (Future)
 
 ### 6.1 Smart Contract
 - [ ] 📝 Deploy NFT contract to Base
