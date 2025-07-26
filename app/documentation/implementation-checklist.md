@@ -147,22 +147,29 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [ ] 📝 Deploy NFT contract to Base
 - [ ] 📝 Metadata standard implementation
 - [ ] 📝 Minting functionality
-- [ ] 📝 Price configuration ($5)
+- [ ] 📝 Price configuration ($5 standard mint)
 - [ ] 📝 Contract testing
 
-### 6.2 Wallet Integration
+### 6.2 Pricing Structure
+- [ ] 📝 Standard mint: $5 (generated alphabet as-is)
+- [ ] 📝 Custom mint: $10 (allows word customization before minting)
+- [ ] 📝 Pricing display in UI
+- [ ] 📝 Payment flow for both tiers
+
+### 6.3 Wallet Integration
 - [ ] 📝 OnchainKit wallet connection
 - [ ] 📝 Transaction handling
 - [ ] 📝 Error handling for failed transactions
 - [ ] 📝 Gas estimation
 - [ ] 📝 Transaction status updates
 
-### 6.3 NFT Features
+### 6.4 NFT Features
 - [ ] 📝 Mint alphabet as NFT
 - [ ] 📝 NFT metadata generation
 - [ ] 📝 IPFS storage for metadata
 - [ ] 📝 NFT collection management
 - [ ] 📝 View owned NFTs
+- [ ] 📝 Viewer unlock functionality (full access after minting)
 
 ---
 
@@ -371,7 +378,8 @@ Would you like me to **clean up the duplications first**, or continue building *
 - [ ] 📝 Bulk collection actions
 
 ### **Advanced Features**  
-- [ ] 📝 Custom word editing interface
+- [ ] 📝 Custom word editing interface ($10 mint tier)
+- [ ] 📝 Word customization flow and validation
 - [ ] 📝 Multiple alphabet themes/styles
 - [ ] 📝 Audio recordings of affirmations
 - [ ] 📝 Sharing individual letters vs full alphabets

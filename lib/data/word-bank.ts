@@ -172,16 +172,31 @@ export function generateRandomAlphabet(): Record<string, string> {
 }
 
 /**
+ * Simple seeded pseudo-random number generator
+ * Uses linear congruential generator for consistency across rerolls
+ */
+function seededRandom(seed: number): () => number {
+  let state = seed
+  return function(): number {
+    // Linear congruential generator constants (same as used in many PRNGs)
+    state = (state * 1664525 + 1013904223) % 4294967296
+    return state / 4294967296
+  }
+}
+
+/**
  * Generate a complete alphabet with specific word indices (for consistency)
- * @param seed - Optional seed for consistent word selection
+ * @param seed - Seed for consistent but varied word selection
  * @returns Object with A-Z letters and consistent words
  */
 export function generateConsistentAlphabet(seed: number = 0): Record<string, string> {
   const alphabet: Record<string, string> = {}
+  const random = seededRandom(seed)
   
   for (let i = 0; i < 26; i++) {
     const letter = String.fromCharCode(65 + i) // A-Z
-    const wordIndex = (seed + i) % getWordsForLetter(letter).length
+    const wordsForLetter = getWordsForLetter(letter)
+    const wordIndex = Math.floor(random() * wordsForLetter.length)
     alphabet[letter] = getWordForLetterByIndex(letter, wordIndex)
   }
   
