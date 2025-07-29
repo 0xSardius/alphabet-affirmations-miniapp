@@ -48,6 +48,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [x] ✅ Add unlimited reroll functionality with "Generate New Set" button
 - [x] ✅ Preserve child name when rerolling for better UX
 - [x] ✅ Fix randomization function for proper seed-based variation
+- [x] ✅ Remove artificial delays for instant, smooth generation
 
 ### 2.2 Reading Experience
 - [x] ✅ Implement page navigation (next/previous)
@@ -103,12 +104,13 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 ## 🔗 Phase 4: MiniKit Features
 
 ### 4.1 Authentication & User Context
-- [ ] 📝 Implement `useAuthenticate` hook for Farcaster sign-in
-- [ ] 📝 Replace hardcoded profile data with real user context
-- [ ] 📝 Handle authentication states (loading, error, success)
+- [x] ✅ Implement `useAuthenticate` hook for Farcaster sign-in
+- [x] ✅ Replace hardcoded profile data with real user context
+- [x] ✅ Handle authentication states (loading, error, success)
+- [x] ✅ Automatic authentication on app load
+- [x] ✅ Personalized experience based on user FID
+- [x] ✅ Profile display in header with real data
 - [ ] 📝 User session management and persistence
-- [ ] 📝 Personalized experience based on user FID
-- [ ] 📝 Profile display in header with real data
 
 ### 4.2 Frame Integration
 - [ ] 📝 Test app loads in Farcaster clients

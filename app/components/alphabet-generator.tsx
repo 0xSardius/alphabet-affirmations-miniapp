@@ -99,9 +99,6 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
 
     setState("generating")
 
-    // Simulate AI generation delay (realistic timing)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
     // Generate personalized seed
     const trimmedName = childName.trim()
     let seed: number
@@ -159,9 +156,6 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
   const handleReroll = async () => {
     setState("generating")
     setRerollCount(prev => prev + 1)
-    
-    // Small delay for UX (shorter than initial generation)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
     
     // Generate new alphabet with updated reroll count
     const trimmedName = childName.trim()
