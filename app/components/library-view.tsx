@@ -6,15 +6,10 @@ import { Card } from "./card"
 import { NFTCollectionCard } from "./nft-collection-card"
 import { Header } from "./header"
 import { cn } from "@/lib/utils"
+import { Collection } from "../../lib/storage/collections"
 
 interface LibraryViewProps {
-  collections: Array<{
-    id: string
-    childName: string
-    letterCount: number
-    mintDate: string
-    thumbnailLetters?: string[]
-  }>
+  collections: Collection[]
   onSelectCollection: (id: string) => void
   onCreateNew: () => void
   onBack?: () => void

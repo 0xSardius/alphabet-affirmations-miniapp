@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useMiniKit, useAuthenticate } from "@coinbase/onchainkit/minikit"
+import { Collection, loadCollections, createCollectionFromAffirmations } from "../lib/storage/collections"
 import { HomeView } from "./components/home-view"
 import { LibraryView } from "./components/library-view"
 import { ReaderPage } from "./components/reader-page"
@@ -140,23 +141,15 @@ export default function AlphabetAffirmations() {
     fid: context?.user?.fid,
   }
 
-  // Sample collections data
-  const [collections] = useState([
-    {
-      id: "1",
-      childName: "Emma",
-      letterCount: 26,
-      mintDate: "Jan 15",
-      thumbnailLetters: ["A", "B", "C", "D"],
-    },
-    {
-      id: "2",
-      childName: "Liam",
-      letterCount: 26,
-      mintDate: "Jan 10",
-      thumbnailLetters: ["A", "B", "C", "D"],
-    },
-  ])
+  // Real collections from localStorage
+  const [collections, setCollections] = useState<Collection[]>([])
+
+  // Load collections from localStorage on app start
+  useEffect(() => {
+    const savedCollections = loadCollections()
+    setCollections(savedCollections)
+    console.log('📚 Loaded', savedCollections.length, 'collections from storage')
+  }, [])
 
   // Use generated affirmations if available, otherwise fall back to sample data
   const currentAffirmations = generatedAffirmations.length > 0 ? generatedAffirmations : 
@@ -192,7 +185,10 @@ export default function AlphabetAffirmations() {
     const collection = collections.find((c) => c.id === id)
     if (collection) {
       setChildName(collection.childName)
+      // Load the collection's affirmations
+      setGeneratedAffirmations(collection.affirmations)
       setCurrentView("alphabet")
+      console.log('📖 Loaded collection:', collection.childName, 'with', collection.affirmations.length, 'affirmations')
     }
   }
 
@@ -217,9 +213,23 @@ export default function AlphabetAffirmations() {
   // Handler for completed minting
   const handleMintingComplete = () => {
     setShowMintingDialog(false)
+    
+    // Save the current alphabet to collections
+    if (generatedAffirmations.length > 0 && childName) {
+      const newCollection = createCollectionFromAffirmations(
+        childName,
+        generatedAffirmations,
+        farcasterProfile.fid
+      )
+      
+      // Update the collections state immediately
+      setCollections(prev => [...prev, newCollection])
+      
+      console.log("💎 NFT minted and saved to collection:", childName)
+    }
+    
     // Go to library view to see the new NFT
     setCurrentView("library")
-    console.log("NFT minted successfully for:", childName)
   }
 
   // Show loading screen while MiniKit initializes or authenticating
