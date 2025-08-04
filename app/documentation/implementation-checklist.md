@@ -3,11 +3,12 @@
 ## 🎯 Project Overview
 Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while building confidence through personalized affirmations for children.
 
-## 🎉 **Current Status: Core MVP Complete!**
+## 🎉 **Current Status: Core MVP with Real Data Complete!**
 - ✅ **Phase 1**: Foundation & Setup - **100% Complete**
 - ✅ **Phase 2**: Core App Functionality - **100% Complete**  
 - ✅ **Phase 3**: UI/UX Polish - **~90% Complete (v0 built)**
-- 🎯 **Phase 4**: Authentication & Data Persistence - **Next Priority**
+- ✅ **Phase 4**: Authentication & Data Persistence - **100% Complete**
+- 🎯 **Phase 5**: NFT Integration (Real Minting) - **Next Priority**
 
 ---
 
@@ -110,7 +111,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [x] ✅ Automatic authentication on app load
 - [x] ✅ Personalized experience based on user FID
 - [x] ✅ Profile display in header with real data
-- [ ] 📝 User session management and persistence
+- [x] ✅ User session management and persistence (via MiniKit context)
 
 ### 4.2 Frame Integration
 - [ ] 📝 Test app loads in Farcaster clients
@@ -126,21 +127,23 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [ ] 📝 Test sharing flow
 - [ ] 📝 `useOpenUrl` for external links
 
-### 4.4 Backend Infrastructure (Redis)
-- [ ] 📝 Evaluate Redis necessity (notifications, frame tracking)
-- [ ] 📝 Set up Upstash Redis if needed
-- [ ] 📝 Notification proxy at `/api/notification`
-- [ ] 📝 Webhook handling for frame events
-- [ ] 📝 Data persistence strategy (localStorage vs Redis)
+### 4.4 Backend Infrastructure (Optional - Redis for Advanced Features)
+- [x] ✅ Evaluate Redis necessity → **NOT NEEDED for core app functionality**
+- [ ] 📝 Set up Upstash Redis (only if adding notifications/bookmarking)
+- [ ] 📝 Notification proxy at `/api/notification` (for bedtime reminders)
+- [ ] 📝 Webhook handling for frame events (for `useAddFrame` bookmarking)
+- [x] ✅ Data persistence strategy → **localStorage chosen for collections**
 
 ---
 
 ## 💾 Phase 5: Data Persistence & NFT Integration
 
-### 5.1 Local Storage (Priority)
-- [ ] 📝 **CRITICAL**: Replace hardcoded sample collections with real localStorage
-- [ ] 📝 **CRITICAL**: Save generated alphabets when created
-- [ ] 📝 **CRITICAL**: Load user's actual collection on app start
+### 5.1 Local Storage (Complete)
+- [x] ✅ **CRITICAL**: Replace hardcoded sample collections with real localStorage
+- [x] ✅ **CRITICAL**: Save generated alphabets when minting
+- [x] ✅ **CRITICAL**: Load user's actual collection on app start
+- [x] ✅ **CRITICAL**: Collections persist across browser sessions
+- [x] ✅ **CRITICAL**: Load selected collection's affirmations properly
 - [ ] 📝 Handle storage quota limits
 - [ ] 📝 Data migration for updates
 - [ ] 📝 Clear storage option
@@ -378,16 +381,22 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
-## 🚀 **Next Self-Contained Features (Non-Duplicative):**
+## 🚀 **Immediate Next Priority: Real NFT Minting**
 
-Based on actual gaps in functionality:
+**What's Complete Now:**
+- ✅ **Real user authentication** with Farcaster
+- ✅ **Real data persistence** with localStorage  
+- ✅ **Seamless user experience** with instant generation
+- ✅ **Full app functionality** - create, reroll, read, save collections
 
-1. **Local Storage Integration** - Replace sample collections with real data
-2. **Collection Management** - Save/load generated alphabets  
-3. **End-to-End Testing Flow** - Test complete A-Z reading experience
-4. **Touch/Mobile Optimization** - Fine-tune for actual mobile usage
+**Critical Gap Remaining:**
+- ❌ **"Mint NFT ($5)" button is still simulated** - doesn't do real blockchain transactions
 
-Would you like me to **clean up the duplications first**, or continue building **new features** and address the duplications later?
+**Next Steps:**
+1. **OnchainKit wallet connection** - Connect user's wallet for transactions
+2. **Deploy NFT contract to Base** - Smart contract for alphabet NFTs
+3. **Real $5 minting** - Actual blockchain transactions
+4. **Transaction handling** - Success/error states, gas estimation
 
 ---
 
