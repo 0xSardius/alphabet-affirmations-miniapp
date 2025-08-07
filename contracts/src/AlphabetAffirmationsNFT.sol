@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract AlphabetAffirmationsNFT is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard {
     uint256 private _nextTokenId = 1; // Start from 1
-    uint256 public constant MINT_PRICE = 0.005 ether; // ~$5 USD
+    uint256 public constant MINT_PRICE = 0.0015 ether; // ~$5.4 USD at $3600
     
     struct AlphabetData {
         string childName;

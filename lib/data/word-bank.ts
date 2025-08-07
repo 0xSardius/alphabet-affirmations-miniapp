@@ -11,55 +11,55 @@ export interface WordBank {
 export const AFFIRMATION_WORDS: WordBank = {
   A: [
     "Amazing", "Awesome", "Adventurous", "Artistic", "Affectionate", 
-    "Ambitious", "Active", "Admirable", "Accomplished", "Adaptable"
+    "Ambitious", "Active", "Admirable", "Accomplished", "Adaptable", "Appreciated", "Able"
   ],
   B: [
     "Brave", "Beautiful", "Brilliant", "Bold", "Bubbly", 
-    "Bright", "Beloved", "Balanced", "Boundless", "Blissful"
+    "Bright", "Beloved", "Balanced", "Boundless", "Blissful", "Blessed", "Brainy"
   ],
   C: [
     "Creative", "Caring", "Confident", "Curious", "Cheerful", 
-    "Clever", "Compassionate", "Courageous", "Charming", "Capable"
+    "Clever", "Compassionate", "Courageous", "Charming", "Capable", "Celebrated", "Calm", "a Champion"
   ],
   D: [
     "Determined", "Delightful", "Dedicated", "Daring", "Dynamic", 
-    "Dependable", "Devoted", "Dignified", "Decisive", "Driven"
+    "Dependable", "Devoted", "Dignified", "Decisive", "Driven", "Deserving"
   ],
   E: [
     "Energetic", "Excellent", "Enthusiastic", "Exceptional", "Empathetic", 
-    "Encouraging", "Elegant", "Extraordinary", "Expressive", "Endearing"
+    "Encouraging", "Elegant", "Extraordinary", "Expressive", "Endearing", "Empowered", "Enough", "Eager"
   ],
   F: [
     "Fantastic", "Friendly", "Fearless", "Fun", "Faithful", 
-    "Fabulous", "Focused", "Funny", "Flexible", "Forgiving"
+    "Fabulous", "Focused", "Funny", "Flexible", "Forgiving", "Fascinating", "Fierce", "Flawless", "Flourishing"
   ],
   G: [
     "Generous", "Gentle", "Gifted", "Graceful", "Great", 
-    "Genuine", "Grateful", "Glorious", "Good", "Giggly"
+    "Genuine", "Grateful", "Glorious", "Good", "Giggly", "Glowing", "Growing"
   ],
   H: [
     "Happy", "Helpful", "Honest", "Hopeful", "Heroic", 
-    "Hardworking", "Harmonious", "Humble", "Healthy", "Hilarious"
+    "Hardworking", "Harmonious", "Humble", "Healthy", "Hilarious", "Honored", "Honorable"
   ],
   I: [
     "Intelligent", "Imaginative", "Inspiring", "Independent", "Incredible", 
-    "Innovative", "Insightful", "Impressive", "Intuitive", "Invincible"
+    "Innovative", "Insightful", "Impressive", "Intuitive", "Invincible", "Important"
   ],
   J: [
     "Joyful", "Just", "Jovial", "Jubilant", "Jolly", 
-    "Gentle", "Generous", "Genuine", "Gracious", "Jaunty"
+    "Jaunty", "Jazzy", "Jaunty", "Judicious"
   ],
   K: [
     "Kind", "Knowledgeable", "Keen", "Kindhearted", "Kooky", 
-    "Knowing", "Kaleidoscopic", "Kingly"
+    "Knowing", "Keen-eyed", "Kingly"
   ],
   L: [
     "Loving", "Loyal", "Lively", "Lucky", "Logical", 
-    "Luminous", "Likeable", "Lighthearted", "Limitless", "Legendary"
+    "Luminous", "Likeable", "Lighthearted", "Limitless", "Legendary", "Loved"
   ],
   M: [
     "Magnificent", "Marvelous", "Motivated", "Magical", "Mindful", 
-    "Memorable", "Mature", "Merry", "Mighty", "Miraculous"
+    "Memorable", "Mature", "Merry", "Mighty", "Miraculous", "Meaningful", "Masterful"
   ],
   N: [
     "Nice", "Noble", "Natural", "Nurturing", "Noteworthy", 
@@ -67,15 +67,15 @@ export const AFFIRMATION_WORDS: WordBank = {
   ],
   O: [
     "Outstanding", "Optimistic", "Original", "Organized", "Outgoing", 
-    "Open", "Observant", "Obedient", "Oceanic", "Outstanding"
+    "Open", "Observant", "Obedient", "Open-minded", "Optimistic"
   ],
   P: [
     "Positive", "Precious", "Powerful", "Playful", "Patient", 
-    "Passionate", "Persistent", "Peaceful", "Perfect", "Polite"
+    "Passionate", "Persistent", "Peaceful", "Perfect", "Polite", "Proud", "Phenomenal"
   ],
   Q: [
     "Quick", "Quiet", "Quality", "Quirky", "Questioning", 
-    "Qualified", "Quaint", "Queenly", "Quotable", "Quixotic"
+    "Qualified", "Quaint", "Queenly", "Quietly-confident", "Quick-thinking"
   ],
   R: [
     "Remarkable", "Respectful", "Responsible", "Radiant", "Resilient", 
@@ -83,15 +83,15 @@ export const AFFIRMATION_WORDS: WordBank = {
   ],
   S: [
     "Strong", "Smart", "Special", "Spectacular", "Supportive", 
-    "Sincere", "Successful", "Sensitive", "Sparkling", "Stellar"
+    "Sincere", "Successful", "Sensitive", "Sparkling", "Stellar", "Shining", "Superb"
   ],
   T: [
     "Talented", "Thoughtful", "Trustworthy", "Tremendous", "Thriving", 
-    "Thankful", "Tenacious", "Tremendous", "Triumphant", "Treasured"
+    "Thankful", "Tenacious", "Terrific", "Triumphant", "Treasured"
   ],
   U: [
     "Unique", "Understanding", "Uplifting", "Unstoppable", "Unbeatable", 
-    "Upbeat", "Useful", "Unlimited", "Unshakeable", "Unconditional"
+    "Upbeat", "Useful", "Unlimited", "Unshakeable", "Unconditional", "Unafraid", "Unforgettable"
   ],
   V: [
     "Valuable", "Vibrant", "Victorious", "Vivacious", "Virtuous", 
@@ -99,19 +99,19 @@ export const AFFIRMATION_WORDS: WordBank = {
   ],
   W: [
     "Wonderful", "Wise", "Witty", "Warm", "Worthy", 
-    "Wholesome", "Willing", "Winning", "Whimsical", "Wondrous"
+    "Wholesome", "Willing", "Winning", "Whimsical", "Wondrous", "Welcomed", "World-changing"
   ],
   X: [
     "eXtraordinary", "eXceptional", "eXcellent", "eXciting", "eXpressive", 
-    "eXpansive", "eXquisite", "eXemplary", "eXuberant", "Xenial"
+    "eXpansive", "eXquisite", "eXemplary", "eXuberant", "Xenial", "eXtra-special"
   ],
   Y: [
     "Young", "Youthful", "Yearning", "Yes-oriented", "Yielding", 
-    "Yummy", "Yippee", "Yonder", "Yearlong", "Yesterday's-hero"
+    "Yippee", "Young-hearted",
   ],
   Z: [
     "Zealous", "Zesty", "Zingy", "Zen", "Zinger", 
-    "Zippy", "Zany", "Zooming", "Zestful", "Zeal-filled"
+    "Zippy", "Zany", "Zooming", "Zestful", "Zingy"
   ]
 }
 
