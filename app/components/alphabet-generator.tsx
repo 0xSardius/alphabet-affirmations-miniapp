@@ -90,6 +90,14 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
     return Math.abs(hash)
   }
 
+  // Persisted reroll counter per name and user (survives component remounts)
+  const getAndIncrementRerollCounter = (childName: string, fid?: number): number => {
+    const key = `alphabet_rr_${fid ?? 'anon'}_${childName.toLowerCase()}`
+    const current = parseInt(sessionStorage.getItem(key) || '0', 10)
+    sessionStorage.setItem(key, String(current + 1))
+    return current
+  }
+
   const handleGenerate = async () => {
     const validation = validateName(childName)
     if (!validation.isValid) {
@@ -102,15 +110,19 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
     // Generate personalized seed
     const trimmedName = childName.trim()
     let seed: number
+
+    // Ensure rerolls change even after component remounts
+    const persistentReroll = getAndIncrementRerollCounter(trimmedName, context?.user?.fid)
+    const effectiveReroll = rerollCount > 0 ? rerollCount : persistentReroll
     
     if (context?.user?.fid) {
       // Use parent's FID for personalized but consistent generation
-      seed = generatePersonalizedSeed(trimmedName, context.user.fid, rerollCount)
-      console.log(`Generated personalized alphabet for ${trimmedName} (Parent FID: ${context.user.fid}, Reroll: ${rerollCount})`)
+      seed = generatePersonalizedSeed(trimmedName, context.user.fid, effectiveReroll)
+      console.log(`Generated personalized alphabet for ${trimmedName} (Parent FID: ${context.user.fid}, Reroll: ${effectiveReroll})`)
     } else {
       // Fallback for development/testing
-      seed = getFallbackSeed(trimmedName, rerollCount)
-      console.log(`Generated alphabet for ${trimmedName} (Development mode, Reroll: ${rerollCount})`)
+      seed = getFallbackSeed(trimmedName, effectiveReroll)
+      console.log(`Generated alphabet for ${trimmedName} (Development mode, Reroll: ${effectiveReroll})`)
     }
     
     const generatedWords = generateConsistentAlphabet(seed)
@@ -160,7 +172,9 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
     // Generate new alphabet with updated reroll count
     const trimmedName = childName.trim()
     let seed: number
-    const newRerollCount = rerollCount + 1
+
+    // Use persistent reroll counter to ensure a new seed every click
+    const newRerollCount = getAndIncrementRerollCounter(trimmedName, context?.user?.fid)
     
     if (context?.user?.fid) {
       seed = generatePersonalizedSeed(trimmedName, context.user.fid, newRerollCount)
