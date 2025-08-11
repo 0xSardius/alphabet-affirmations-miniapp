@@ -252,7 +252,7 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
                 disabled={!nameValidation.isValid}
                 className="w-full"
               >
-                Generate Preview
+                Create My Alphabet
               </Button>
             </div>
           </div>
