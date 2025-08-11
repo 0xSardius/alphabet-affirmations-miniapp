@@ -321,21 +321,21 @@ export default function AlphabetAffirmations() {
             </Card>
 
             {/* Actions */}
-            <div className="space-y-4">
-              <Button variant="primary" size="lg" onClick={handleStartReading} className="w-full">
-                Start Reading
-              </Button>
-              
-              <div className="flex gap-3">
-                <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
-                  Generate New Set
+                          <div className="space-y-4">
+                <Button variant="primary" size="lg" onClick={handleMint} className="w-full">
+                  Save as NFT ($5)
                 </Button>
                 
-                <Button variant="primary" size="md" onClick={handleMint} className="flex-1">
-                  Mint NFT ($5)
-                </Button>
+                <div className="flex gap-3">
+                  <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
+                    Generate New Set
+                  </Button>
+                  
+                  <Button variant="ghost" size="md" onClick={handleStartReading} className="flex-1">
+                    Preview Reading (A–C)
+                  </Button>
+                </div>
               </div>
-            </div>
           </div>
         </div>
 

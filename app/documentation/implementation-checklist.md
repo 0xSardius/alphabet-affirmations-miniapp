@@ -92,6 +92,8 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [ ] 📝 Success states for completed actions
 - [ ] 📝 Hover and focus states for all interactive elements
 - [ ] 📝 Smooth transitions and animations
+- [x] ✅ Alphabet view CTA strategy: primary “Save as NFT ($5)”, secondary “Generate New Set”, tertiary “Preview Reading (A–C)”
+- [x] ✅ Reader gating before mint: allow A–C preview; upsell opens mint dialog beyond C
 
 ### 3.3 Accessibility
 - [ ] 📝 Keyboard navigation support
@@ -153,6 +155,7 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - [ ] 📝 **CRITICAL**: OnchainKit wallet connection
 - [ ] 📝 **CRITICAL**: Deploy NFT contract to Base
 - [ ] 📝 **CRITICAL**: $5 minting functionality
+- [x] ✅ Reader unlock after mint (full A–Z)
 - [ ] 📝 NFT metadata generation and IPFS storage
 - [ ] 📝 Transaction error handling
 - [ ] 📝 Gas estimation and transaction status
