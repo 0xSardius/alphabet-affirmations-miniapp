@@ -267,10 +267,10 @@ contract AlphabetAffirmationsV2Test is Test {
         uint256 contractBalance = address(nftContract).balance;
         assertEq(contractBalance, 0.0018 ether);
         
-        // Withdraw as owner
-        uint256 ownerBalanceBefore = address(owner).balance;
+        // Withdraw as owner (test contract is the owner)
+        uint256 ownerBalanceBefore = address(this).balance;
         nftContract.withdraw();
-        uint256 ownerBalanceAfter = address(owner).balance;
+        uint256 ownerBalanceAfter = address(this).balance;
         
         assertEq(ownerBalanceAfter - ownerBalanceBefore, 0.0018 ether);
         assertEq(address(nftContract).balance, 0);

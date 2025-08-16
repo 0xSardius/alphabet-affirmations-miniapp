@@ -11,7 +11,7 @@ contract AlphabetAffirmationsNFTTest is Test {
     address public user1;
     address public user2;
     
-    uint256 public constant MINT_PRICE = 0.005 ether;
+    uint256 public constant MINT_PRICE = 0.0015 ether;
     
     // Sample alphabet words for testing
     string[26] public sampleWords = [
