@@ -6,10 +6,10 @@ import "../src/AlphabetAffirmationsNFTV2.sol";
 
 /**
  * @title AlphabetAffirmationsV2 Deployment Script
- * @dev Deploy the V2 contract with hybrid pricing to Sepolia testnet
+ * @dev Deploy the V2 contract with hybrid pricing to Base Sepolia testnet
  * 
  * Usage:
- * forge script script/AlphabetAffirmationsV2DeployScript.s.sol:AlphabetAffirmationsV2DeployScript --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $ETHERSCAN_API_KEY
+ * forge script script/AlphabetAffirmationsV2DeployScript.s.sol:AlphabetAffirmationsV2DeployScript --rpc-url $BASE_SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify --etherscan-api-key $BASESCAN_API_KEY
  */
 contract AlphabetAffirmationsV2DeployScript is Script {
     function run() external {
@@ -31,7 +31,8 @@ contract AlphabetAffirmationsV2DeployScript is Script {
         
         // Log deployment summary
         console.log("\n=== DEPLOYMENT SUMMARY ===");
-        console.log("Network: Sepolia");
+        console.log("Network: Base Sepolia");
+        console.log("Chain ID: 84532");
         console.log("Contract: AlphabetAffirmationsNFTV2");
         console.log("Address:", address(nftContract));
         console.log("Symbol: ALPHAV2");
@@ -44,6 +45,8 @@ contract AlphabetAffirmationsV2DeployScript is Script {
         console.log("  ✓ Name-first psychology support");
         console.log("  ✓ Analytics & user history");
         console.log("  ✓ Emergency pause functionality");
+        console.log("Verification:");
+        console.log("  Verify on BaseScan: https://sepolia.basescan.org/address/", address(nftContract));
         console.log("========================");
     }
 }
