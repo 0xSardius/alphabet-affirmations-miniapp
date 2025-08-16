@@ -80,7 +80,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
         MintTier tier,
         string[] calldata customizedLetters,
         string calldata nameLetters
-    ) external payable nonReentrant returns (uint256) {
+    ) external payable nonReentrant whenNotPaused returns (uint256) {
         // Validate payment based on tier
         uint256 requiredPrice = tier == MintTier.RANDOM ? RANDOM_PRICE : CUSTOM_PRICE;
         require(msg.value >= requiredPrice, "Insufficient payment for selected tier");
@@ -233,7 +233,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
     /**
      * @dev Update pricing (owner only)
      */
-    function updatePricing(uint256 newRandomPrice, uint256 newCustomPrice) external onlyOwner {
+    function updatePricing(uint256 /* newRandomPrice */, uint256 /* newCustomPrice */) external view onlyOwner {
         // Note: This would require upgradeability pattern in production
         // For now, prices are constants but this function shows the intent
         revert("Pricing is fixed in this version");
@@ -268,10 +268,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
         _;
     }
     
-    // Override mint to include pause functionality
-    function _mint(address to, uint256 tokenId) internal override whenNotPaused {
-        super._mint(to, tokenId);
-    }
+    // Apply pause check in our public mint function instead of overriding internal _mint
     
     // Override required functions
     function tokenURI(uint256 tokenId) 
