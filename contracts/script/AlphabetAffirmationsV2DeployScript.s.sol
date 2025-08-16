@@ -40,11 +40,11 @@ contract AlphabetAffirmationsV2DeployScript is Script {
         console.log("  Random Tier: 0.0003 ETH (~$0.99)");
         console.log("  Custom Tier: 0.0015 ETH (~$5.00)");
         console.log("Features:");
-        console.log("  ✓ Two-tier pricing");
-        console.log("  ✓ Customization tracking");
-        console.log("  ✓ Name-first psychology support");
-        console.log("  ✓ Analytics & user history");
-        console.log("  ✓ Emergency pause functionality");
+        console.log("  * Two-tier pricing");
+        console.log("  * Customization tracking");
+        console.log("  * Name-first psychology support");
+        console.log("  * Analytics & user history");
+        console.log("  * Emergency pause functionality");
         console.log("Verification:");
         console.log("  Verify on BaseScan: https://sepolia.basescan.org/address/", address(nftContract));
         console.log("========================");
