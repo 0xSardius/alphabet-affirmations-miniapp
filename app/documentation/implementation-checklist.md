@@ -384,7 +384,55 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
-## 🚀 **Immediate Next Priority: Real NFT Minting**
+## 🚀 **STRATEGIC PIVOT: Hybrid Pricing Model Implementation**
+
+**Major Strategic Change:** Moving from single $5 tier to hybrid two-tier pricing model with name-first psychology.
+
+### **New User Flow:**
+1. **Name-First Preview**: Child's letters shown prominently + teaser of others
+2. **Reading Experience**: Free access to child's name letters, conversion at end
+3. **Two-Tier Choice**: $0.99 random keepsake vs $5 custom keepsake
+4. **Purchase Path**: Streamlined minting for each tier
+5. **Success & Collection**: Encourage additional alphabets
+
+---
+
+## 🎯 **Hybrid Model Action Plan**
+
+### **Phase 1: NFT Contract V2 (Priority for Sepolia)**
+- [ ] 📝 **CRITICAL**: Update contract for two-tier pricing ($0.99 / $5.00)
+- [ ] 📝 **CRITICAL**: Add customization tracking (tier, customized letters)
+- [ ] 📝 **CRITICAL**: Deploy AlphabetAffirmationsNFTV2 to Sepolia
+- [ ] 📝 **CRITICAL**: Test both pricing tiers on testnet
+- [ ] 📝 **CRITICAL**: Update minting functions for tier selection
+
+### **Phase 2: Name Extraction & Sequencing**
+- [ ] 📝 **HIGH**: Build name letter extraction utility
+- [ ] 📝 **HIGH**: Create name-first reader sequence logic
+- [ ] 📝 **HIGH**: Update alphabet generation to separate name vs other letters
+- [ ] 📝 **MEDIUM**: Add reader sequence state management
+
+### **Phase 3: New Components (Core UX)**
+- [ ] 📝 **HIGH**: Build NameFirstPreview component (replaces current alphabet view)
+- [ ] 📝 **HIGH**: Create HybridPricingModal (two-tier choice interface)
+- [ ] 📝 **MEDIUM**: Build WordCustomizer for $5 tier
+- [ ] 📝 **MEDIUM**: Create CustomizationFlow interface
+
+### **Phase 4: Modified Components**
+- [ ] 📝 **HIGH**: Update ReaderPage for name-first sequence + conversion trigger
+- [ ] 📝 **HIGH**: Modify MintingDialog to handle both pricing tiers
+- [ ] 📝 **MEDIUM**: Update AlphabetGenerator with name extraction
+- [ ] 📝 **LOW**: Update ProgressDots to show unlocked/locked states
+
+### **Phase 5: State Management Overhaul**
+- [ ] 📝 **HIGH**: Add hybrid app state (name letters, reader sequence, pricing tier)
+- [ ] 📝 **HIGH**: Implement conversion trigger logic
+- [ ] 📝 **MEDIUM**: Add customization state management
+- [ ] 📝 **LOW**: Update view state machine for new flow
+
+---
+
+## 🚀 **Previous Priority: Real NFT Minting (Updated)**
 
 **What's Complete Now:**
 - ✅ **Real user authentication** with Farcaster
@@ -392,14 +440,18 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - ✅ **Seamless user experience** with instant generation
 - ✅ **Full app functionality** - create, reroll, read, save collections
 
-**Critical Gap Remaining:**
-- ❌ **"Mint NFT ($5)" button is still simulated** - doesn't do real blockchain transactions
+**Updated Critical Gaps:**
+- ❌ **NFT contract needs V2 for hybrid pricing** - Two-tier pricing structure
+- ❌ **Name-first user flow** - Child's letters prominent, then conversion
+- ❌ **Real blockchain transactions** - Still simulated minting
+- ❌ **Customization interface** - For $5 tier word selection
 
-**Next Steps:**
-1. **OnchainKit wallet connection** - Connect user's wallet for transactions
-2. **Deploy NFT contract to Base** - Smart contract for alphabet NFTs
-3. **Real $5 minting** - Actual blockchain transactions
-4. **Transaction handling** - Success/error states, gas estimation
+**Updated Next Steps:**
+1. **Deploy NFT Contract V2** - Two-tier pricing + customization tracking
+2. **Build name-first preview** - Child's letters prominent display
+3. **Create hybrid pricing modal** - $0.99 vs $5 choice interface
+4. **OnchainKit wallet connection** - Real blockchain transactions
+5. **Customization flow** - Word selection for premium tier
 
 ---
 
