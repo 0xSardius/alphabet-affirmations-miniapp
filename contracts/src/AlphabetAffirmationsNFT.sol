@@ -31,7 +31,7 @@ contract AlphabetAffirmationsNFT is ERC721, ERC721URIStorage, Ownable, Reentranc
     function mintAlphabet(
         string calldata childName,
         string[26] calldata words,
-        string calldata tokenURI
+        string calldata metadataURI
     ) external payable nonReentrant returns (uint256) {
         require(msg.value >= MINT_PRICE, "Insufficient payment");
         require(bytes(childName).length > 0, "Child name required");
@@ -45,7 +45,7 @@ contract AlphabetAffirmationsNFT is ERC721, ERC721URIStorage, Ownable, Reentranc
         uint256 tokenId = _nextTokenId++;
         
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, metadataURI);
         
         alphabets[tokenId] = AlphabetData({
             childName: childName,

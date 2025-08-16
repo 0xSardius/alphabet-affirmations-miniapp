@@ -68,7 +68,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
      * @dev Mint an alphabet NFT with hybrid pricing
      * @param childName The child's name for personalization
      * @param words Array of 26 words (A-Z)
-     * @param tokenURI IPFS URI for NFT metadata
+     * @param metadataURI IPFS URI for NFT metadata
      * @param tier Random or Custom tier
      * @param customizedLetters Array of letters that were customized
      * @param nameLetters String of child's name letters for display
@@ -76,7 +76,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
     function mintAlphabet(
         string calldata childName,
         string[26] calldata words,
-        string calldata tokenURI,
+        string calldata metadataURI,
         MintTier tier,
         string[] calldata customizedLetters,
         string calldata nameLetters
@@ -104,7 +104,7 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
         uint256 tokenId = _nextTokenId++;
         
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, tokenURI);
+        _setTokenURI(tokenId, metadataURI);
         
         // Store alphabet data
         alphabets[tokenId] = AlphabetData({
@@ -269,8 +269,8 @@ contract AlphabetAffirmationsNFTV2 is ERC721, ERC721URIStorage, Ownable, Reentra
     }
     
     // Override mint to include pause functionality
-    function _safeMint(address to, uint256 tokenId) internal override whenNotPaused {
-        super._safeMint(to, tokenId);
+    function _mint(address to, uint256 tokenId) internal override whenNotPaused {
+        super._mint(to, tokenId);
     }
     
     // Override required functions
