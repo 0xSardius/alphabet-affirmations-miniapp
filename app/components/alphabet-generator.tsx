@@ -8,7 +8,7 @@ import { PartialPreview } from "./partial-preview"
 import { PreviewSkeleton } from "./preview-skeleton"
 import { MintingDialog } from "./minting-dialog"
 import { Header } from "./header"
-import { generateRandomAlphabet, generateConsistentAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
+import { generateRandomAlphabet, generateConsistentAlphabet, generateTrulyRandomAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
 
 type Affirmation = {
   letter: string
@@ -57,7 +57,9 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
 
   // Generate personalized seed using child name + parent's FID + reroll count
   const generatePersonalizedSeed = (childName: string, parentFid: number, rerollCount: number = 0): number => {
-    const combined = `${childName.toLowerCase()}-${parentFid}-${rerollCount}`
+    // Add timestamp component for more variation
+    const timestamp = Math.floor(Date.now() / 1000) // Seconds since epoch
+    const combined = `${childName.toLowerCase()}-${parentFid}-${rerollCount}-${timestamp}`
     let hash = 0
     
     for (let i = 0; i < combined.length; i++) {
@@ -65,6 +67,13 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
       hash = ((hash << 5) - hash) + char
       hash = hash & hash // Convert to 32-bit integer
     }
+    
+    // Add additional entropy with bitwise operations
+    hash ^= hash >>> 16
+    hash *= 0x85ebca6b
+    hash ^= hash >>> 13
+    hash *= 0xc2b2ae35
+    hash ^= hash >>> 16
     
     return Math.abs(hash)
   }
@@ -78,7 +87,10 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
       sessionStorage.setItem('alphabet_session_id', sessionId)
     }
     
-    const combined = `${childName.toLowerCase()}-${sessionId}-${rerollCount}`
+    // Add timestamp and random component for better variation
+    const timestamp = Math.floor(Date.now() / 100) // Change every 100ms for more variation
+    const randomComponent = Math.floor(Math.random() * 1000000)
+    const combined = `${childName.toLowerCase()}-${sessionId}-${rerollCount}-${timestamp}-${randomComponent}`
     let hash = 0
     
     for (let i = 0; i < combined.length; i++) {
@@ -86,6 +98,13 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
       hash = ((hash << 5) - hash) + char
       hash = hash & hash
     }
+    
+    // Apply same entropy enhancement as personalized seed
+    hash ^= hash >>> 16
+    hash *= 0x85ebca6b
+    hash ^= hash >>> 13
+    hash *= 0xc2b2ae35
+    hash ^= hash >>> 16
     
     return Math.abs(hash)
   }
@@ -213,7 +232,8 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
   }
 
   const regenerateAllWords = () => {
-    const newWords = generateRandomAlphabet()
+    // Use truly random generation for immediate variation
+    const newWords = generateTrulyRandomAlphabet()
     const newAffirmations: Affirmation[] = Object.entries(newWords).map(([letter, word]) => ({
       letter,
       word

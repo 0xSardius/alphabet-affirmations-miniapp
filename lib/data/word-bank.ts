@@ -94,7 +94,7 @@ export const AFFIRMATION_WORDS: WordBank = {
     "Upbeat", "Useful", "Unlimited", "Unshakeable", "Unconditional", "Unafraid", "Unforgettable"
   ],
   V: [
-    "Valuable", "Vibrant", "Victorious", "Vivacious", "Virtuous", 
+    "Valuable", "Vibrant", "Victorious",  "Virtuous", 
     "Visionary", "Versatile", "Vigorous", "Vital", "Vivid"
   ],
   W: [
@@ -172,14 +172,44 @@ export function generateRandomAlphabet(): Record<string, string> {
 }
 
 /**
- * Simple seeded pseudo-random number generator
- * Uses linear congruential generator for consistency across rerolls
+ * Generate a truly random alphabet (no seeding, completely random each time)
+ * @returns Object with A-Z letters and completely random words
+ */
+export function generateTrulyRandomAlphabet(): Record<string, string> {
+  const alphabet: Record<string, string> = {}
+  
+  for (let i = 0; i < 26; i++) {
+    const letter = String.fromCharCode(65 + i) // A-Z
+    const wordsForLetter = getWordsForLetter(letter)
+    // Use crypto.getRandomValues for true randomness if available
+    let randomIndex: number
+    
+    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+      const array = new Uint32Array(1)
+      crypto.getRandomValues(array)
+      randomIndex = array[0] % wordsForLetter.length
+    } else {
+      randomIndex = Math.floor(Math.random() * wordsForLetter.length)
+    }
+    
+    alphabet[letter] = wordsForLetter[randomIndex]
+  }
+  
+  return alphabet
+}
+
+/**
+ * Improved seeded pseudo-random number generator
+ * Uses a better algorithm for more variation between similar seeds
  */
 function seededRandom(seed: number): () => number {
   let state = seed
   return function(): number {
-    // Linear congruential generator constants (same as used in many PRNGs)
-    state = (state * 1664525 + 1013904223) % 4294967296
+    // Xorshift32 algorithm - better distribution than LCG
+    state ^= state << 13
+    state ^= state >>> 17
+    state ^= state << 5
+    state = state >>> 0 // Convert to unsigned 32-bit
     return state / 4294967296
   }
 }
