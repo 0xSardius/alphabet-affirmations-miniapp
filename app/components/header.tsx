@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useClose } from "@coinbase/onchainkit/minikit"
 import { ArrowLeft, X } from "lucide-react"
 import { ProfileIndicator } from "./profile-indicator"
 import { cn } from "@/lib/utils"
@@ -32,14 +32,14 @@ export function Header({
   isLoadingProfile = false,
   className,
 }: HeaderProps) {
+  const close = useClose()
+  
   const handleClose = () => {
     if (onClose) {
       onClose()
     } else {
-      // Default Farcaster close behavior
-      if (typeof window !== "undefined" && window.parent) {
-        window.parent.postMessage({ type: "close" }, "*")
-      }
+      // Use MiniKit close functionality
+      close()
     }
   }
 
