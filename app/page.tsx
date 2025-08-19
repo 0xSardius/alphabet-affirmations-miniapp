@@ -16,6 +16,7 @@ import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
 import { MiniKitLoadingScreen } from "./components/minikit-loading-screen"
 import { MintingDialog } from "./components/minting-dialog"
+import { HybridPricingModal } from "./components/hybrid-pricing-modal"
 
 // Sample affirmation words for fallback (when no generated alphabet exists)
 const affirmationWords = {
@@ -66,6 +67,8 @@ export default function AlphabetAffirmations() {
   const [showAddBanner, setShowAddBanner] = useState(true)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
   const [showMintingDialog, setShowMintingDialog] = useState(false)
+  const [showHybridPricingModal, setShowHybridPricingModal] = useState(false)
+  const [selectedMintTier, setSelectedMintTier] = useState<"random" | "custom">("random")
   
   // Authentication state
   const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -205,9 +208,29 @@ export default function AlphabetAffirmations() {
     setCurrentView("generator")
   }
 
-  // Handler for minting the current alphabet
-  const handleMint = () => {
+  // Handler for showing hybrid pricing modal
+  const handleShowPricing = () => {
+    setShowHybridPricingModal(true)
+  }
+
+  // Handler for random mint ($0.99)
+  const handleRandomMint = () => {
+    setShowHybridPricingModal(false)
+    setSelectedMintTier("random")
     setShowMintingDialog(true)
+  }
+
+  // Handler for custom mint ($5.00)
+  const handleCustomMint = () => {
+    setShowHybridPricingModal(false)
+    // TODO: Navigate to word customizer
+    console.log("🎨 Custom tier selected - navigate to customizer")
+  }
+
+  // Handler for generating new alphabet from pricing modal
+  const handleGenerateFromModal = () => {
+    setShowHybridPricingModal(false)
+    handleReroll()
   }
 
   // Handler for completed minting
@@ -320,24 +343,34 @@ export default function AlphabetAffirmations() {
               ))}
             </Card>
 
-            {/* Actions */}
-                          <div className="space-y-4">
-                <Button variant="primary" size="lg" onClick={handleMint} className="w-full">
-                  Save as NFT ($5)
+            {/* Actions - Hybrid Pricing */}
+            <div className="space-y-4">
+              <Button variant="primary" size="lg" onClick={handleShowPricing} className="w-full">
+                💜 Keep This Alphabet Forever
+              </Button>
+              
+              <div className="flex gap-3">
+                <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
+                  🎲 Generate New Set
                 </Button>
                 
-                <div className="flex gap-3">
-                  <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
-                    Generate New Set
-                  </Button>
-                  
-                  <Button variant="ghost" size="md" onClick={handleStartReading} className="flex-1">
-                    Preview Reading (A–C)
-                  </Button>
-                </div>
+                <Button variant="ghost" size="md" onClick={handleStartReading} className="flex-1">
+                  👀 Preview Reading (A–C)
+                </Button>
               </div>
+            </div>
           </div>
         </div>
+
+        {/* Hybrid Pricing Modal */}
+        <HybridPricingModal
+          childName={childName}
+          isOpen={showHybridPricingModal}
+          onRandomPurchase={handleRandomMint}
+          onCustomPurchase={handleCustomMint}
+          onGenerateNew={handleGenerateFromModal}
+          onClose={() => setShowHybridPricingModal(false)}
+        />
 
         {/* Minting Dialog */}
         <MintingDialog
@@ -345,6 +378,7 @@ export default function AlphabetAffirmations() {
           isOpen={showMintingDialog}
           onClose={() => setShowMintingDialog(false)}
           onMint={handleMintingComplete}
+          tier={selectedMintTier}
         />
       </div>
     )

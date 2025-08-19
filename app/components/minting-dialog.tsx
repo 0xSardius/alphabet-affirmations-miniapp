@@ -6,16 +6,18 @@ import { Card } from "./card"
 import { WalletStatusChip } from "./wallet-status-chip"
 import { ShareButton } from "./share-button"
 import { cn } from "@/lib/utils"
+import { CONTRACTS, PRICING } from "@/lib/constants/contracts"
 
 interface MintingDialogProps {
   childName: string
   isOpen: boolean
   onClose: () => void
   onMint: () => void
+  tier?: "random" | "custom"
   className?: string
 }
 
-export function MintingDialog({ childName, isOpen, onClose, onMint, className }: MintingDialogProps) {
+export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
   const [walletStatus, setWalletStatus] = useState<"connected" | "connecting" | "insufficient" | "error">("connected")
 
@@ -68,11 +70,15 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, className }:
       <Card className="max-w-sm w-full space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h3 className="text-xl font-serif text-white">Mint for $5</h3>
+          <h3 className="text-xl font-serif text-white">
+            Mint for {tier === "random" ? "$0.99" : "$5.00"}
+          </h3>
           <p className="text-sm text-gray-400 font-sans">
-            Create {childName}
-            {"'"}s personalized alphabet NFT
+            Create {childName}{"'"}s {tier === "random" ? "random" : "custom"} alphabet NFT
           </p>
+          <div className="text-xs text-gray-500 font-mono">
+            Contract: {CONTRACTS.ALPHABET_NFT_V2.address}
+          </div>
         </div>
 
         {/* Wallet Status */}

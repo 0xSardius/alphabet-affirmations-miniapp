@@ -68,7 +68,7 @@ export function HybridPricingModal({
             <h3 className="font-serif font-bold text-white">Random Keepsake</h3>
           </div>
           <p className="text-sm text-gray-300 font-sans">
-            Keep these exact words as forever
+            Keep these exact words forever
           </p>
           <div className="text-center">
             <div className="text-2xl font-bold text-green-400">Just $0.99</div>
@@ -120,8 +120,11 @@ export function HybridPricingModal({
             onClick={onGenerateNew}
             className="w-full text-gray-400 hover:text-white"
           >
-            Generate New Words
+            🎲 Try Different Words (Free)
           </Button>
+          <div className="text-xs text-center text-gray-500 font-sans">
+            Reroll as many times as you want • Mint your favorites
+          </div>
           <Button 
             variant="ghost"
             size="sm"
