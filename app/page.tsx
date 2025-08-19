@@ -349,15 +349,9 @@ export default function AlphabetAffirmations() {
                 💜 Keep This Alphabet Forever
               </Button>
               
-              <div className="flex gap-3">
-                <Button variant="secondary" size="md" onClick={handleReroll} className="flex-1">
-                  🎲 Generate New Set
-                </Button>
-                
-                <Button variant="ghost" size="md" onClick={handleStartReading} className="flex-1">
-                  👀 Preview Reading (A–C)
-                </Button>
-              </div>
+              <Button variant="secondary" size="lg" onClick={handleReroll} className="w-full">
+                🎲 Generate New Set
+              </Button>
             </div>
           </div>
         </div>
