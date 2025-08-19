@@ -7,6 +7,10 @@ import { WalletStatusChip } from "./wallet-status-chip"
 import { ShareButton } from "./share-button"
 import { cn } from "@/lib/utils"
 import { CONTRACTS, PRICING } from "@/lib/constants/contracts"
+import { AlphabetAffirmationsNFTV2ABI } from "@/lib/contracts/AlphabetAffirmationsNFTV2.abi"
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi"
+import { parseEther } from "viem"
+import React from "react"
 
 interface MintingDialogProps {
   childName: string
@@ -19,26 +23,58 @@ interface MintingDialogProps {
 
 export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
-  const [walletStatus, setWalletStatus] = useState<"connected" | "connecting" | "insufficient" | "error">("connected")
+  
+  // Wagmi hooks for blockchain interaction
+  const { address, isConnected } = useAccount()
+  const { writeContract, data: hash, error, isPending } = useWriteContract()
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
 
   if (!isOpen) return null
 
+  // Update minting state based on transaction status
+  React.useEffect(() => {
+    if (isPending) setMintingState("minting")
+    if (isSuccess) setMintingState("success")
+    if (error) setMintingState("error")
+  }, [isPending, isSuccess, error])
+
   const handleMint = async () => {
-    setMintingState("minting")
+    if (!address || !isConnected) {
+      console.error("Wallet not connected")
+      return
+    }
+
     try {
-      await onMint()
-      setMintingState("success")
+      const mintPrice = tier === "random" ? PRICING.RANDOM_TIER : PRICING.CUSTOM_TIER
+      
+      // Call the contract mint function
+      writeContract({
+        address: CONTRACTS.ALPHABET_NFT_V2.address as `0x${string}`,
+        abi: AlphabetAffirmationsNFTV2ABI,
+        functionName: "mintAlphabet",
+        args: [
+          address,
+          tier === "random" ? 0 : 1, // MintTier enum: RANDOM = 0, CUSTOM = 1
+          `https://example.com/metadata/${childName}`, // TODO: Generate proper metadata
+          [], // customizedLetters - empty for random tier
+          [] // nameLetters - TODO: extract from childName
+        ],
+        value: parseEther(mintPrice),
+      })
     } catch (error) {
+      console.error("Minting error:", error)
       setMintingState("error")
-      setWalletStatus("error")
     }
   }
 
-  const handleRetryWallet = () => {
-    setWalletStatus("connecting")
-    // Simulate retry
-    setTimeout(() => setWalletStatus("connected"), 1000)
-  }
+  // Handle successful mint
+  React.useEffect(() => {
+    if (isSuccess) {
+      onMint() // Call the parent's onMint callback for collection saving
+    }
+  }, [isSuccess, onMint])
+
+
 
   if (mintingState === "success") {
     return (
@@ -76,13 +112,14 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
           <p className="text-sm text-gray-400 font-sans">
             Create {childName}{"'"}s {tier === "random" ? "random" : "custom"} alphabet NFT
           </p>
-          <div className="text-xs text-gray-500 font-mono">
-            Contract: {CONTRACTS.ALPHABET_NFT_V2.address}
-          </div>
         </div>
 
         {/* Wallet Status */}
-        <WalletStatusChip status={walletStatus} address="0x1234567890123456" onRetry={handleRetryWallet} />
+        <WalletStatusChip 
+          status={isConnected ? "connected" : "error"} 
+          address={address || "Not connected"} 
+          onRetry={() => {}} 
+        />
 
         {/* Actions */}
         <div className="space-y-3">
@@ -90,10 +127,10 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
             variant="primary"
             size="lg"
             onClick={handleMint}
-            disabled={mintingState === "minting" || walletStatus !== "connected"}
+            disabled={isPending || isConfirming || !isConnected}
             className="w-full"
           >
-            {mintingState === "minting" ? "Minting..." : "Confirm Mint"}
+            {isPending || isConfirming ? "Minting..." : "Confirm Mint"}
           </Button>
 
           <Button variant="ghost" size="md" onClick={onClose} className="w-full">
@@ -104,3 +141,4 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
     </div>
   )
 }
+
