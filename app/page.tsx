@@ -17,6 +17,7 @@ import { AlphabetGenerator } from "./components/alphabet-generator"
 import { MiniKitLoadingScreen } from "./components/minikit-loading-screen"
 import { MintingDialog } from "./components/minting-dialog"
 import { HybridPricingModal } from "./components/hybrid-pricing-modal"
+import { WordCustomizer } from "./components/word-customizer"
 
 // Sample affirmation words for fallback (when no generated alphabet exists)
 const affirmationWords = {
@@ -69,6 +70,8 @@ export default function AlphabetAffirmations() {
   const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [showHybridPricingModal, setShowHybridPricingModal] = useState(false)
   const [selectedMintTier, setSelectedMintTier] = useState<"random" | "custom">("random")
+  const [showWordCustomizer, setShowWordCustomizer] = useState(false)
+  const [customizedAffirmations, setCustomizedAffirmations] = useState<{ letter: string; word: string }[]>([])
   
   // Authentication state
   const [isAuthenticating, setIsAuthenticating] = useState(false)
@@ -223,14 +226,37 @@ export default function AlphabetAffirmations() {
   // Handler for custom mint ($5.00)
   const handleCustomMint = () => {
     setShowHybridPricingModal(false)
-    // TODO: Navigate to word customizer
-    console.log("🎨 Custom tier selected - navigate to customizer")
+    setSelectedMintTier("custom")
+    setCustomizedAffirmations(generatedAffirmations) // Start with current affirmations
+    setShowWordCustomizer(true)
   }
 
   // Handler for generating new alphabet from pricing modal
   const handleGenerateFromModal = () => {
     setShowHybridPricingModal(false)
     handleReroll()
+  }
+
+  // Handler for saving customized words
+  const handleSaveCustomizedWords = (customizedWords: { letter: string; word: string }[]) => {
+    setCustomizedAffirmations(customizedWords)
+    setGeneratedAffirmations(customizedWords) // Update the main affirmations
+    setShowWordCustomizer(false)
+    setShowMintingDialog(true) // Proceed to minting
+  }
+
+  // Handler for going back from word customizer
+  const handleBackFromCustomizer = () => {
+    setShowWordCustomizer(false)
+    setShowHybridPricingModal(true) // Return to pricing modal
+  }
+
+  // Handler for custom upgrade upsell
+  const handleCustomUpgrade = () => {
+    setShowMintingDialog(false)
+    setSelectedMintTier("custom")
+    setCustomizedAffirmations(generatedAffirmations) // Start with current affirmations
+    setShowWordCustomizer(true)
   }
 
   // Handler for completed minting
@@ -242,7 +268,8 @@ export default function AlphabetAffirmations() {
       const newCollection = createCollectionFromAffirmations(
         childName,
         generatedAffirmations,
-        farcasterProfile.fid
+        farcasterProfile.fid,
+        selectedMintTier // Pass the tier for proper naming
       )
       
       // Update the collections state immediately
@@ -251,8 +278,10 @@ export default function AlphabetAffirmations() {
       console.log("💎 NFT minted and saved to collection:", childName)
     }
     
-    // Go to library view to see the new NFT
-    setCurrentView("library")
+    // For infinite reroll cycle: Stay in alphabet view and generate new set
+    handleReroll() // This will generate a new alphabet automatically
+    
+    // Show success state briefly (handled by MintingDialog success screen)
   }
 
   // Show loading screen while MiniKit initializes or authenticating
@@ -373,7 +402,18 @@ export default function AlphabetAffirmations() {
           onClose={() => setShowMintingDialog(false)}
           onMint={handleMintingComplete}
           tier={selectedMintTier}
+          onCustomUpgrade={handleCustomUpgrade}
         />
+
+        {/* Word Customizer */}
+        {showWordCustomizer && (
+          <WordCustomizer
+            childName={childName}
+            affirmations={customizedAffirmations}
+            onSave={handleSaveCustomizedWords}
+            onBack={handleBackFromCustomizer}
+          />
+        )}
       </div>
     )
   }

@@ -18,10 +18,11 @@ interface MintingDialogProps {
   onClose: () => void
   onMint: () => void
   tier?: "random" | "custom"
+  onCustomUpgrade?: () => void // New callback for upsell
   className?: string
 }
 
-export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", className }: MintingDialogProps) {
+export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", onCustomUpgrade, className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
   
   // Wagmi hooks for blockchain interaction
@@ -82,17 +83,26 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
         <Card className="max-w-sm w-full text-center space-y-6">
           <div className="space-y-4">
             <div className="text-4xl">⭐</div>
-            <h3 className="text-xl font-serif text-white">Success!</h3>
+            <h3 className="text-xl font-serif text-white">NFT Minted!</h3>
             <p className="text-gray-400 font-sans">
-              {childName}
-              {"'"}s alphabet is ready!
+              {childName}{"'"}s {tier} alphabet is now yours forever!
+            </p>
+            <p className="text-sm text-purple-400 font-sans">
+              ✨ Try minting another unique set!
             </p>
           </div>
 
           <div className="space-y-3">
             <Button variant="primary" size="lg" onClick={onClose} className="w-full">
-              Start Reading Now
+              🎲 Generate New Alphabet
             </Button>
+
+            {/* Upsell for random mints */}
+            {tier === "random" && onCustomUpgrade && (
+              <Button variant="secondary" size="lg" onClick={onCustomUpgrade} className="w-full">
+                ✨ Make Perfect Custom Set - $5
+              </Button>
+            )}
 
             <ShareButton childName={childName} variant="success" onShare={() => {}} className="w-full justify-center" />
           </div>

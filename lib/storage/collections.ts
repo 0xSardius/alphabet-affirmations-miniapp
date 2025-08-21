@@ -83,7 +83,8 @@ export function removeCollection(id: string): void {
 export function createCollectionFromAffirmations(
   childName: string,
   affirmations: { letter: string; word: string }[],
-  userFid?: number
+  userFid?: number,
+  tier: "random" | "custom" = "random"
 ): Collection {
   const now = new Date()
   const mintDate = now.toLocaleDateString('en-US', { 
@@ -91,8 +92,19 @@ export function createCollectionFromAffirmations(
     day: 'numeric' 
   })
   
+  // Count existing collections for this child to create unique naming
+  const existing = loadCollections()
+  const childCollections = existing.filter(c => c.childName.toLowerCase() === childName.toLowerCase())
+  const tierCollections = childCollections.filter(c => c.id.includes(tier))
+  const tierCount = tierCollections.length + 1
+  
+  // Create descriptive collection name
+  const collectionSuffix = tier === "random" 
+    ? tierCount === 1 ? "" : ` #${tierCount}` // "Emma" or "Emma #2"
+    : " (Custom)" // "Emma (Custom)"
+  
   return addCollection({
-    childName,
+    childName: childName + collectionSuffix,
     affirmations,
     letterCount: affirmations.length,
     mintDate,
