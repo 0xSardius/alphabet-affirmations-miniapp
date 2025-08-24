@@ -30,8 +30,6 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
   const { writeContract, data: hash, error, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
 
-  if (!isOpen) return null
-
   // Update minting state based on transaction status
   React.useEffect(() => {
     if (isPending) setMintingState("minting")
@@ -75,7 +73,8 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
     }
   }, [isSuccess, onMint])
 
-
+  // Early return after all hooks are called
+  if (!isOpen) return null
 
   if (mintingState === "success") {
     return (
