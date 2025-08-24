@@ -403,6 +403,7 @@ export default function AlphabetAffirmations() {
           onMint={handleMintingComplete}
           tier={selectedMintTier}
           onCustomUpgrade={handleCustomUpgrade}
+          affirmations={generatedAffirmations}
         />
 
         {/* Word Customizer */}

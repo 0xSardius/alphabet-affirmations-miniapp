@@ -19,10 +19,11 @@ interface MintingDialogProps {
   onMint: () => void
   tier?: "random" | "custom"
   onCustomUpgrade?: () => void // New callback for upsell
+  affirmations?: { letter: string; word: string }[] // Actual affirmations to mint
   className?: string
 }
 
-export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", onCustomUpgrade, className }: MintingDialogProps) {
+export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", onCustomUpgrade, affirmations = [], className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
   
   // Wagmi hooks for blockchain interaction
@@ -46,17 +47,28 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
     try {
       const mintPrice = tier === "random" ? PRICING.RANDOM_TIER : PRICING.CUSTOM_TIER
       
+      // Convert affirmations to 26-word array (A-Z order)
+      const words = Array.from({ length: 26 }, (_, i) => {
+        const letter = String.fromCharCode(65 + i) // A, B, C...
+        const affirmation = affirmations.find(a => a.letter.toUpperCase() === letter)
+        return affirmation ? affirmation.word : `${letter}mazing` // Fallback word
+      }) as [string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string]
+      
+      // Extract name letters (first letters of child name)
+      const nameLetters = childName.toUpperCase().split('').slice(0, 10).join('') // Max 10 letters
+      
       // Call the contract mint function
       writeContract({
         address: CONTRACTS.ALPHABET_NFT_V2.address as `0x${string}`,
         abi: AlphabetAffirmationsNFTV2ABI,
         functionName: "mintAlphabet",
         args: [
-          address,
-          tier === "random" ? 0 : 1, // MintTier enum: RANDOM = 0, CUSTOM = 1
-          `https://example.com/metadata/${childName}`, // TODO: Generate proper metadata
-          [], // customizedLetters - empty for random tier
-          [] // nameLetters - TODO: extract from childName
+          childName, // string calldata childName
+          words, // string[26] calldata words
+          `https://example.com/metadata/${childName}`, // string calldata metadataURI
+          tier === "random" ? 0 : 1, // MintTier tier
+          [], // string[] calldata customizedLetters - empty for random tier
+          nameLetters // string calldata nameLetters
         ],
         value: parseEther(mintPrice),
       })

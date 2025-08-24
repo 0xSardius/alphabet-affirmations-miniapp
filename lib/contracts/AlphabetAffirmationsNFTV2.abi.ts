@@ -1,14 +1,15 @@
 export const AlphabetAffirmationsNFTV2ABI = [
   {
     "inputs": [
-      {"name": "to", "type": "address"},
-      {"name": "tier", "type": "uint8"},
+      {"name": "childName", "type": "string"},
+      {"name": "words", "type": "string[26]"},
       {"name": "metadataURI", "type": "string"},
+      {"name": "tier", "type": "uint8"},
       {"name": "customizedLetters", "type": "string[]"},
-      {"name": "nameLetters", "type": "string[]"}
+      {"name": "nameLetters", "type": "string"}
     ],
     "name": "mintAlphabet",
-    "outputs": [{"name": "", "type": "uint256"}],
+    "outputs": [],
     "stateMutability": "payable",
     "type": "function"
   },
