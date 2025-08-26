@@ -38,7 +38,7 @@ contract AlphabetAffirmationsV2Test is Test {
     // Allow test contract to receive ETH from withdraw function
     receive() external payable {}
     
-    function testContractDeployment() public {
+    function testContractDeployment() public view {
         assertEq(nftContract.name(), "Alphabet Affirmations V2");
         assertEq(nftContract.symbol(), "ALPHAV2");
         assertEq(nftContract.owner(), owner);
