@@ -71,7 +71,7 @@ export function HybridPricingModal({
             Keep these exact words forever
           </p>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-400">Just $0.99</div>
+            <div className="text-2xl font-bold text-green-400">0.0003 ETH</div>
             <Button 
               variant="primary"
               size="md"
@@ -100,7 +100,7 @@ export function HybridPricingModal({
             Pick perfect words for {childName} first
           </p>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-400">$5.00</div>
+            <div className="text-2xl font-bold text-purple-400">0.0015 ETH</div>
             <Button 
               variant="primary"
               size="md"

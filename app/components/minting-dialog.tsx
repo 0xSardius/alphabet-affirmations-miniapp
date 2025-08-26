@@ -31,12 +31,28 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
   const { writeContract, data: hash, error, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
 
+  // Reset state when dialog opens/closes
+  React.useEffect(() => {
+    if (isOpen) {
+      setMintingState("idle")
+    }
+  }, [isOpen])
+
   // Update minting state based on transaction status
   React.useEffect(() => {
-    if (isPending) setMintingState("minting")
-    if (isSuccess) setMintingState("success")
-    if (error) setMintingState("error")
-  }, [isPending, isSuccess, error])
+    console.log('🔄 Transaction status:', { isPending, isSuccess, error: !!error, hash })
+    
+    if (isPending) {
+      console.log('⏳ Setting state to minting')
+      setMintingState("minting")
+    } else if (isSuccess) {
+      console.log('✅ Setting state to success')
+      setMintingState("success")
+    } else if (error) {
+      console.log('❌ Setting state to error:', error)
+      setMintingState("error")
+    }
+  }, [isPending, isSuccess, error, hash])
 
   const handleMint = async () => {
     if (!address || !isConnected) {
@@ -111,7 +127,7 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
             {/* Upsell for random mints */}
             {tier === "random" && onCustomUpgrade && (
               <Button variant="secondary" size="lg" onClick={onCustomUpgrade} className="w-full">
-                ✨ Make Perfect Custom Set - $5
+                ✨ Make Perfect Custom Set - 0.0015 ETH
               </Button>
             )}
 
@@ -128,7 +144,7 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
         {/* Header */}
         <div className="text-center space-y-2">
           <h3 className="text-xl font-serif text-white">
-            Mint for {tier === "random" ? "$0.99" : "$5.00"}
+            Mint for {tier === "random" ? "0.0003 ETH" : "0.0015 ETH"}
           </h3>
           <p className="text-sm text-gray-400 font-sans">
             Create {childName}{"'"}s {tier === "random" ? "random" : "custom"} alphabet NFT
