@@ -95,12 +95,12 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsRead
     }
   }
 
-  // Handle successful mint
+  // Handle successful mint - only run once when isSuccess becomes true
   React.useEffect(() => {
     if (isSuccess) {
       onMint() // Call the parent's onMint callback for collection saving
     }
-  }, [isSuccess, onMint])
+  }, [isSuccess]) // Remove onMint from dependencies to prevent infinite loop
 
   // Early return after all hooks are called
   if (!isOpen) return null
