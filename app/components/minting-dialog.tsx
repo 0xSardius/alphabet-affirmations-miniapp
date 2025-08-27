@@ -110,13 +110,10 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsRead
       <div className={cn("fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50", className)}>
         <Card className="max-w-sm w-full text-center space-y-6">
           <div className="space-y-4">
-            <div className="text-4xl">⭐</div>
-            <h3 className="text-xl font-serif text-white">NFT Minted!</h3>
+            <div className="text-4xl">🎉</div>
+            <h3 className="text-xl font-serif text-white">Success!</h3>
             <p className="text-gray-400 font-sans">
-              {childName}{"'"}s {tier} alphabet is now yours forever!
-            </p>
-            <p className="text-sm text-purple-400 font-sans">
-              ✨ Try minting another unique set!
+              View alphabet affirmation now?
             </p>
           </div>
 
@@ -128,19 +125,12 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsRead
                 onClose()
               }
             }} className="w-full">
-              📖 View as Reading
+              📖 Yes, Read Now
             </Button>
             
             <Button variant="secondary" size="lg" onClick={onClose} className="w-full">
-              🎲 Generate New Alphabet
+              🏠 Back to Home
             </Button>
-
-            {/* Upsell for random mints */}
-            {tier === "random" && onCustomUpgrade && (
-              <Button variant="secondary" size="lg" onClick={onCustomUpgrade} className="w-full">
-                ✨ Make Perfect Custom Set - 0.0015 ETH
-              </Button>
-            )}
 
             <ShareButton childName={childName} variant="success" onShare={() => {}} className="w-full justify-center" />
           </div>

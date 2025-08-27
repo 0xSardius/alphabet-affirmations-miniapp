@@ -262,7 +262,7 @@ export default function AlphabetAffirmations() {
 
   // Handler for completed minting
   const handleMintingComplete = () => {
-    setShowMintingDialog(false)
+    // Don't close the dialog immediately - let the success screen show
     
     // Save the current alphabet to collections
     if (generatedAffirmations.length > 0 && childName) {
@@ -280,10 +280,7 @@ export default function AlphabetAffirmations() {
       console.log("💎 NFT minted and saved to collection:", childName)
     }
     
-    // For infinite reroll cycle: Stay in alphabet view and generate new set
-    handleReroll() // This will generate a new alphabet automatically
-    
-    // Show success state briefly (handled by MintingDialog success screen)
+    // Success screen will handle navigation - either to reader or back to home
   }
 
   // Handler for "View as Reading" from minting success
@@ -408,7 +405,10 @@ export default function AlphabetAffirmations() {
         <MintingDialog
           childName={childName}
           isOpen={showMintingDialog}
-          onClose={() => setShowMintingDialog(false)}
+          onClose={() => {
+            setShowMintingDialog(false)
+            setCurrentView("home") // Go back to home page
+          }}
           onMint={handleMintingComplete}
           onViewAsReading={handleViewAsReading}
           tier={selectedMintTier}
