@@ -17,13 +17,14 @@ interface MintingDialogProps {
   isOpen: boolean
   onClose: () => void
   onMint: () => void
+  onViewAsReading?: () => void // New callback for "View as Reading"
   tier?: "random" | "custom"
   onCustomUpgrade?: () => void // New callback for upsell
   affirmations?: { letter: string; word: string }[] // Actual affirmations to mint
   className?: string
 }
 
-export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "random", onCustomUpgrade, affirmations = [], className }: MintingDialogProps) {
+export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsReading, tier = "random", onCustomUpgrade, affirmations = [], className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
   
   // Wagmi hooks for blockchain interaction
@@ -120,7 +121,17 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, tier = "rand
           </div>
 
           <div className="space-y-3">
-            <Button variant="primary" size="lg" onClick={onClose} className="w-full">
+            <Button variant="primary" size="lg" onClick={() => {
+              if (onViewAsReading) {
+                onViewAsReading()
+              } else {
+                onClose()
+              }
+            }} className="w-full">
+              📖 View as Reading
+            </Button>
+            
+            <Button variant="secondary" size="lg" onClick={onClose} className="w-full">
               🎲 Generate New Alphabet
             </Button>
 

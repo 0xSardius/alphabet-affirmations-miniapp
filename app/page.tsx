@@ -193,8 +193,9 @@ export default function AlphabetAffirmations() {
       setChildName(collection.childName)
       // Load the collection's affirmations
       setGeneratedAffirmations(collection.affirmations)
-      setCurrentView("alphabet")
-      console.log('📖 Loaded collection:', collection.childName, 'with', collection.affirmations.length, 'affirmations')
+      setCurrentLetter(0) // Start at first letter
+      setCurrentView("reader") // Go directly to reader mode
+      console.log('📖 Opened collection in reader:', collection.childName, 'with', collection.affirmations.length, 'affirmations')
     }
   }
 
@@ -274,6 +275,7 @@ export default function AlphabetAffirmations() {
       
       // Update the collections state immediately
       setCollections(prev => [...prev, newCollection])
+      setSelectedCollection(newCollection.id) // Mark as selected for proper back navigation
       
       console.log("💎 NFT minted and saved to collection:", childName)
     }
@@ -282,6 +284,13 @@ export default function AlphabetAffirmations() {
     handleReroll() // This will generate a new alphabet automatically
     
     // Show success state briefly (handled by MintingDialog success screen)
+  }
+
+  // Handler for "View as Reading" from minting success
+  const handleViewAsReading = () => {
+    setShowMintingDialog(false)
+    setCurrentLetter(0) // Start at first letter
+    setCurrentView("reader") // Go to reader mode
   }
 
   // Show loading screen while MiniKit initializes or authenticating
@@ -401,6 +410,7 @@ export default function AlphabetAffirmations() {
           isOpen={showMintingDialog}
           onClose={() => setShowMintingDialog(false)}
           onMint={handleMintingComplete}
+          onViewAsReading={handleViewAsReading}
           tier={selectedMintTier}
           onCustomUpgrade={handleCustomUpgrade}
           affirmations={generatedAffirmations}
@@ -424,7 +434,7 @@ export default function AlphabetAffirmations() {
       <div className="min-h-screen bg-black text-white">
         <Header
           showBack={true}
-          onBack={() => setCurrentView("alphabet")}
+          onBack={() => setCurrentView(selectedCollection ? "library" : "alphabet")}
           username={farcasterProfile.username}
           avatarUrl={farcasterProfile.avatarUrl}
           isConnected={farcasterProfile.isConnected}
