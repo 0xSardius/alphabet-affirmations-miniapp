@@ -13,10 +13,11 @@ interface LibraryViewProps {
   onSelectCollection: (id: string) => void
   onCreateNew: () => void
   onBack?: () => void
+  isLoading?: boolean
   className?: string
 }
 
-export function LibraryView({ collections, onSelectCollection, onCreateNew, onBack, className }: LibraryViewProps) {
+export function LibraryView({ collections, onSelectCollection, onCreateNew, onBack, isLoading = false, className }: LibraryViewProps) {
   return (
     <div className={cn("bg-black text-white min-h-screen", className)}>
       {/* Header */}
@@ -33,12 +34,19 @@ export function LibraryView({ collections, onSelectCollection, onCreateNew, onBa
 
         {/* Collections */}
         <div className="space-y-4">
-          {collections.length === 0 ? (
+          {isLoading ? (
+            /* Loading State */
+            <Card className="text-center py-12">
+              <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+              <h3 className="text-lg font-serif text-gray-400 mb-2">Loading your NFTs...</h3>
+              <p className="text-gray-500 font-sans">Fetching collections from blockchain</p>
+            </Card>
+          ) : collections.length === 0 ? (
             /* Empty State */
             <Card variant="dashed" className="text-center py-12">
               <Plus className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-serif text-gray-400 mb-2">No collections yet</h3>
-              <p className="text-gray-500 font-sans mb-6">Create your first personalized alphabet</p>
+              <h3 className="text-lg font-serif text-gray-400 mb-2">No NFTs found</h3>
+              <p className="text-gray-500 font-sans mb-6">Create your first personalized alphabet NFT</p>
               <Button variant="primary" onClick={onCreateNew}>
                 Create Your First
               </Button>

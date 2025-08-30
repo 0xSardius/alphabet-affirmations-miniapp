@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { useMiniKit, useAuthenticate } from "@coinbase/onchainkit/minikit"
-import { Collection, loadCollections, createCollectionFromAffirmations } from "../lib/storage/collections"
+import { useAccount } from "wagmi"
+import { Collection, createCollectionFromAffirmations } from "../lib/storage/collections"
+import { getUserNFTCollections, NFTCollection } from "../lib/nft-data"
 import { HomeView } from "./components/home-view"
 import { LibraryView } from "./components/library-view"
 import { ReaderPage } from "./components/reader-page"
@@ -59,6 +61,7 @@ type GeneratedAffirmation = {
 export default function AlphabetAffirmations() {
   const { setFrameReady, isFrameReady, context } = useMiniKit()
   const { signIn } = useAuthenticate()
+  const { address: walletAddress, isConnected: isWalletConnected } = useAccount()
   
   const [currentView, setCurrentView] = useState<View>("home")
   const [childName, setChildName] = useState("")
@@ -147,15 +150,44 @@ export default function AlphabetAffirmations() {
     fid: context?.user?.fid,
   }
 
-  // Real collections from localStorage
+  // Real collections from blockchain
   const [collections, setCollections] = useState<Collection[]>([])
+  const [isLoadingCollections, setIsLoadingCollections] = useState(false)
 
-  // Load collections from localStorage on app start
+  // Load NFT collections when user is authenticated
   useEffect(() => {
-    const savedCollections = loadCollections()
-    setCollections(savedCollections)
-    console.log('📚 Loaded', savedCollections.length, 'collections from storage')
-  }, [])
+    async function loadNFTCollections() {
+      if (!farcasterProfile.isConnected || !walletAddress) {
+        setCollections([])
+        return
+      }
+
+      setIsLoadingCollections(true)
+      try {
+        const nftCollections = await getUserNFTCollections(walletAddress)
+        // Convert NFTCollection to Collection format
+        const convertedCollections: Collection[] = nftCollections.map((nft) => ({
+          id: nft.id,
+          childName: nft.childName,
+          affirmations: nft.affirmations,
+          mintDate: nft.mintDate,
+          createdAt: nft.mintDate, // Use mintDate as createdAt
+          letterCount: nft.letterCount,
+          thumbnailLetters: nft.thumbnailLetters.map(t => t.word),
+          fid: farcasterProfile.fid || 0,
+        }))
+        setCollections(convertedCollections)
+        console.log('📚 Loaded', convertedCollections.length, 'NFT collections from blockchain')
+      } catch (error) {
+        console.error('❌ Failed to load NFT collections:', error)
+        setCollections([])
+      } finally {
+        setIsLoadingCollections(false)
+      }
+    }
+
+    loadNFTCollections()
+  }, [farcasterProfile.isConnected, walletAddress, farcasterProfile.fid])
 
   // Use generated affirmations if available, otherwise fall back to sample data
   const currentAffirmations = generatedAffirmations.length > 0 ? generatedAffirmations : 
@@ -261,23 +293,40 @@ export default function AlphabetAffirmations() {
   }
 
   // Handler for completed minting
-  const handleMintingComplete = () => {
+  const handleMintingComplete = async () => {
     // Don't close the dialog immediately - let the success screen show
     
-    // Save the current alphabet to collections
-    if (generatedAffirmations.length > 0 && childName) {
-      const newCollection = createCollectionFromAffirmations(
-        childName,
-        generatedAffirmations,
-        farcasterProfile.fid,
-        selectedMintTier // Pass the tier for proper naming
-      )
-      
-      // Update the collections state immediately
-      setCollections(prev => [...prev, newCollection])
-      setSelectedCollection(newCollection.id) // Mark as selected for proper back navigation
-      
-      console.log("💎 NFT minted and saved to collection:", childName)
+    console.log("💎 NFT minted successfully:", childName)
+    
+    // Refresh NFT collections from blockchain
+    if (farcasterProfile.isConnected && walletAddress) {
+      try {
+        setIsLoadingCollections(true)
+        const nftCollections = await getUserNFTCollections(walletAddress)
+        const convertedCollections: Collection[] = nftCollections.map((nft) => ({
+          id: nft.id,
+          childName: nft.childName,
+          affirmations: nft.affirmations,
+          mintDate: nft.mintDate,
+          createdAt: nft.mintDate, // Use mintDate as createdAt
+          letterCount: nft.letterCount,
+          thumbnailLetters: nft.thumbnailLetters.map(t => t.word),
+          fid: farcasterProfile.fid || 0,
+        }))
+        setCollections(convertedCollections)
+        
+        // Find the newly minted collection and mark it as selected
+        const newCollection = convertedCollections.find(c => c.childName === childName)
+        if (newCollection) {
+          setSelectedCollection(newCollection.id)
+        }
+        
+        console.log("🔄 Refreshed collections from blockchain")
+      } catch (error) {
+        console.error('❌ Failed to refresh collections:', error)
+      } finally {
+        setIsLoadingCollections(false)
+      }
     }
     
     // Success screen will handle navigation - either to reader or back to home
@@ -343,6 +392,7 @@ export default function AlphabetAffirmations() {
         onSelectCollection={handleSelectCollection}
         onCreateNew={handleCreateNew}
         onBack={() => setCurrentView("home")}
+        isLoading={isLoadingCollections}
       />
     )
   }
