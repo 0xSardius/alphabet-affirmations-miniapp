@@ -4,11 +4,11 @@ import { base } from 'wagmi/chains'
 import { CONTRACTS } from './constants/contracts'
 import { AlphabetAffirmationsNFTV2ABI } from './contracts/AlphabetAffirmationsNFTV2.abi'
 
-// Create a simple config for contract reads
+// Create a config with CDP API key to avoid rate limits
 const config = createConfig({
   chains: [base],
   transports: {
-    [base.id]: http(),
+    [base.id]: http(`https://api.developer.coinbase.com/rpc/v1/base/${process.env.NEXT_PUBLIC_ONCHAINKIT_CLIENT_API_KEY}`),
   },
 })
 
