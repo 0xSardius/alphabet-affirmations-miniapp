@@ -18,7 +18,7 @@ export function ShareButton({ childName, variant, isSharing = false, onShare, cl
   const getShareText = () => {
     switch (variant) {
       case "success":
-        return `Just created ${childName}'s personalized alphabet! 🎯✨`
+        return `Just minted ${childName}'s personalized alphabet affirmations! 🎯✨\n\nMint yours now! ↗️`
       case "completion":
         return `${childName} completed their alphabet affirmations! 📚💫`
       case "milestone":

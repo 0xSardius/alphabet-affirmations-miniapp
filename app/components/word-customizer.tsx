@@ -172,76 +172,68 @@ export function WordCustomizer({
   const hasChanges = changeCount > 0
 
   return (
-    <div className={cn("min-h-screen bg-black text-white", className)}>
-      <Header 
-        title="Customize Words"
-        showBack={!!onBack}
-        onBack={onBack}
-      />
-      
-      <div className="px-6 py-8">
-        <Card className="max-w-md mx-auto space-y-6">
-          <div className="text-center space-y-2">
-            <h1 className="text-xl font-serif font-bold text-white">
-              Make {childName}'s Alphabet Perfect
-            </h1>
-            <p className="text-sm text-gray-400 font-sans">
-              Tap any word to change it
-            </p>
-          </div>
+    <div className={cn("fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4", className)}>
+      <Card className="max-w-md w-full space-y-6 max-h-[80vh] overflow-y-auto">
+        <div className="text-center space-y-2">
+          <h1 className="text-xl font-serif font-bold text-white">
+            Make {childName}'s Alphabet Perfect
+          </h1>
+          <p className="text-sm text-gray-400 font-sans">
+            Tap any word to change it
+          </p>
+        </div>
 
-          {/* Affirmations List */}
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {customizedAffirmations.map((affirmation) => (
-              <div 
-                key={affirmation.letter}
-                className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
-                onClick={() => setSelectedLetter(affirmation.letter)}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-white font-sans">
-                    {affirmation.letter.toUpperCase()}
-                  </span>
-                  <span className="text-white font-serif">
-                    {affirmation.word}
-                  </span>
-                </div>
-                <Button variant="ghost" size="sm" className="text-xs">
-                  ✏️ Change
-                </Button>
+        {/* Affirmations List */}
+        <div className="space-y-2 max-h-60 overflow-y-auto">
+          {customizedAffirmations.map((affirmation) => (
+            <div 
+              key={affirmation.letter}
+              className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+              onClick={() => setSelectedLetter(affirmation.letter)}
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-white font-sans">
+                  {affirmation.letter.toUpperCase()}
+                </span>
+                <span className="text-white font-serif">
+                  {affirmation.word}
+                </span>
               </div>
-            ))}
-          </div>
+              <Button variant="ghost" size="sm" className="text-xs">
+                ✏️ Change
+              </Button>
+            </div>
+          ))}
+        </div>
 
-          {/* Tip */}
-          <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-3">
-            <p className="text-sm text-blue-300 font-sans">
-              💡 Tip: Most parents change 2-3 words to feel perfect
-            </p>
-          </div>
+        {/* Tip */}
+        <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-3">
+          <p className="text-sm text-blue-300 font-sans">
+            💡 Tip: Most parents change 2-3 words to feel perfect
+          </p>
+        </div>
 
-          {/* Actions */}
-          <div className="space-y-3">
-            <Button 
-              variant="primary" 
-              size="lg" 
-              onClick={() => onSave(customizedAffirmations)}
-              className="w-full"
-            >
-              {hasChanges ? `Save Changes (${changeCount} modified)` : 'Mint - $5'}
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="md" 
-              onClick={() => {/* Preview reading logic */}}
-              className="w-full"
-            >
-              Preview Reading
-            </Button>
-          </div>
-        </Card>
-      </div>
+        {/* Actions */}
+        <div className="space-y-3">
+          <Button 
+            variant="primary" 
+            size="lg" 
+            onClick={() => onSave(customizedAffirmations)}
+            className="w-full"
+          >
+            {hasChanges ? `Save Changes (${changeCount} modified)` : 'Mint - $5'}
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            size="md" 
+            onClick={onBack}
+            className="w-full"
+          >
+            Cancel
+          </Button>
+        </div>
+      </Card>
 
       {/* Word Selection Modal */}
       <WordSelectionModal

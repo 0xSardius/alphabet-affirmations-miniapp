@@ -551,7 +551,47 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
-## 🚀 **Phase 8: Optional Future Features (Post-MVP)**
+## 🚀 **Phase 8: Gamification & Engagement System (Post-MVP)**
+
+### **8.1 Point System & Rewards**
+- [ ] 📝 **HIGH**: Reading streak tracking (daily consistency rewards)
+- [ ] 📝 **HIGH**: Point system for completing full alphabet readings
+- [ ] 📝 **HIGH**: Bonus points for reading with different children
+- [ ] 📝 **MEDIUM**: Achievement badges (7-day streak, 30-day streak, etc.)
+- [ ] 📝 **MEDIUM**: Weekly/monthly reading challenges
+- [ ] 📝 **LOW**: Leaderboards for family members
+
+### **8.2 Consistency Tracking**
+- [ ] 📝 **HIGH**: Reading session analytics (time spent, letters completed)
+- [ ] 📝 **HIGH**: Calendar view showing reading history
+- [ ] 📝 **HIGH**: Streak counter with visual progress indicators
+- [ ] 📝 **MEDIUM**: Reading time recommendations (bedtime routine integration)
+- [ ] 📝 **MEDIUM**: Parent dashboard showing child's progress over time
+- [ ] 📝 **LOW**: Reading insights and personalized tips
+
+### **8.3 Habit Formation Features**
+- [ ] 📝 **HIGH**: Daily reading reminders (push notifications)
+- [ ] 📝 **HIGH**: Reading goal setting (e.g., "Read 3 times this week")
+- [ ] 📝 **MEDIUM**: Bedtime routine integration with time-based suggestions
+- [ ] 📝 **MEDIUM**: Reading session duration tracking
+- [ ] 📝 **LOW**: Integration with family calendar apps
+
+### **8.4 Social & Sharing Enhancements**
+- [ ] 📝 **MEDIUM**: Share reading streaks to Farcaster
+- [ ] 📝 **MEDIUM**: Family reading challenges (multiple parents/children)
+- [ ] 📝 **MEDIUM**: Reading milestone celebrations with automatic sharing
+- [ ] 📝 **LOW**: Community reading challenges
+
+### **8.5 Data Storage & Analytics**
+- [ ] 📝 **HIGH**: Redis-based session tracking and point storage
+- [ ] 📝 **HIGH**: User reading patterns and consistency metrics
+- [ ] 📝 **MEDIUM**: Export reading data for parents
+- [ ] 📝 **MEDIUM**: Privacy-compliant analytics dashboard
+- [ ] 📝 **LOW**: Reading effectiveness insights (which words/letters are favorites)
+
+---
+
+## 🚀 **Phase 9: Advanced Features (Future)**
 
 ### **Collection Management Enhancements**
 - [ ] 📝 Add delete button for collection view
