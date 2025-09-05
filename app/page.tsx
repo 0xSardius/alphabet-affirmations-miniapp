@@ -465,17 +465,16 @@ export default function AlphabetAffirmations() {
           affirmations={generatedAffirmations}
         />
 
+        {/* Word Customizer - Modal Overlay */}
+        {showWordCustomizer && (
+          <WordCustomizer
+            childName={childName}
+            affirmations={customizedAffirmations}
+            onSave={handleSaveCustomizedWords}
+            onBack={handleBackFromCustomizer}
+          />
+        )}
       </div>
-
-      {/* Word Customizer - Modal Overlay */}
-      {showWordCustomizer && (
-        <WordCustomizer
-          childName={childName}
-          affirmations={customizedAffirmations}
-          onSave={handleSaveCustomizedWords}
-          onBack={handleBackFromCustomizer}
-        />
-      )}
     )
   }
 
