@@ -30,6 +30,15 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
   const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [rerollCount, setRerollCount] = useState(0)
 
+  // Create profile object from real user data or fallback
+  const farcasterProfile = {
+    username: context?.user?.username || "user",
+    avatarUrl: context?.user?.pfpUrl || "/placeholder.svg?height=24&width=24",
+    isConnected: !!context?.user,
+    isLoading: false,
+    fid: context?.user?.fid,
+  }
+
   // Name validation function
   const validateName = (name: string): { isValid: boolean; error?: string } => {
     const trimmedName = name.trim()
@@ -254,7 +263,13 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
   if (state === "input") {
     return (
       <div className="min-h-screen bg-black text-white">
-        <Header title="Create Alphabet" />
+        <Header 
+          title="Create Alphabet"
+          username={farcasterProfile.username}
+          avatarUrl={farcasterProfile.avatarUrl}
+          isConnected={farcasterProfile.isConnected}
+          isLoadingProfile={farcasterProfile.isLoading}
+        />
         <div className="px-6 py-8 flex flex-col justify-center">
           <div className="max-w-sm mx-auto w-full space-y-8">
             <div className="text-center space-y-4">
@@ -299,7 +314,15 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
     const title = rerollCount > 0 ? "Generating New Set..." : "Generating..."
     return (
       <div className="min-h-screen bg-black text-white">
-        <Header title={title} showBack onBack={handleBack} />
+        <Header 
+          title={title} 
+          showBack 
+          onBack={handleBack}
+          username={farcasterProfile.username}
+          avatarUrl={farcasterProfile.avatarUrl}
+          isConnected={farcasterProfile.isConnected}
+          isLoadingProfile={farcasterProfile.isLoading}
+        />
         <div className="px-6 py-8">
           <PreviewSkeleton childName={childName} />
         </div>
@@ -310,7 +333,15 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
   return (
     <>
       <div className="min-h-screen bg-black text-white">
-        <Header title="Preview" showBack onBack={handleBack} />
+        <Header 
+          title="Preview" 
+          showBack 
+          onBack={handleBack}
+          username={farcasterProfile.username}
+          avatarUrl={farcasterProfile.avatarUrl}
+          isConnected={farcasterProfile.isConnected}
+          isLoadingProfile={farcasterProfile.isLoading}
+        />
         <div className="px-6 py-8">
           <PartialPreview
             childName={childName}

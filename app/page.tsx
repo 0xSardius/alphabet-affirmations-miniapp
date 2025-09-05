@@ -408,7 +408,6 @@ export default function AlphabetAffirmations() {
           avatarUrl={farcasterProfile.avatarUrl}
           isConnected={farcasterProfile.isConnected}
           isLoadingProfile={farcasterProfile.isLoading}
-          actions={<ShareButton childName={childName} variant="success" onShare={() => {}} />}
         />
         <div className="px-6 py-4">
           <div className="max-w-md mx-auto">
