@@ -3,12 +3,14 @@
 ## 🎯 Project Overview
 Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while building confidence through personalized affirmations for children.
 
-## 🎉 **Current Status: Core MVP with Real Data Complete!**
+## 🎉 **Current Status: Hybrid Pricing Model + Real NFT Data Integration Complete!**
 - ✅ **Phase 1**: Foundation & Setup - **100% Complete**
 - ✅ **Phase 2**: Core App Functionality - **100% Complete**  
-- ✅ **Phase 3**: UI/UX Polish - **~90% Complete (v0 built)**
+- ✅ **Phase 3**: UI/UX Polish - **~95% Complete (Fixed collection card display)**
 - ✅ **Phase 4**: Authentication & Data Persistence - **100% Complete**
-- 🎯 **Phase 5**: NFT Integration (Real Minting) - **Next Priority**
+- ✅ **Phase 5**: Hybrid Pricing Model - **100% Complete**
+- ✅ **Phase 6**: Real NFT Data Integration - **100% Complete**
+- 🎯 **Phase 7**: Real Blockchain Minting - **Next Priority**
 
 ---
 
@@ -384,6 +386,66 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 
 ---
 
+## ✅ Phase 5: Hybrid Pricing Model Implementation (COMPLETE)
+
+### 5.1 NFT Contract V2 
+- [x] ✅ **CRITICAL**: Updated contract for two-tier pricing ($0.99 / $5.00)
+- [x] ✅ **CRITICAL**: Added customization tracking (tier, customized letters)
+- [x] ✅ **CRITICAL**: Deployed AlphabetAffirmationsNFTV2 to Base Mainnet
+- [x] ✅ **CRITICAL**: Both pricing tiers tested and working
+- [x] ✅ **CRITICAL**: Updated minting functions for tier selection
+
+### 5.2 Hybrid Pricing Modal
+- [x] ✅ **HIGH**: Built HybridPricingModal component (two-tier choice interface)
+- [x] ✅ **HIGH**: Integrated pricing modal into alphabet view
+- [x] ✅ **HIGH**: Connected modal callbacks to minting flow
+- [x] ✅ **HIGH**: Added "Generate New Set" option for rerolls
+
+### 5.3 Word Customizer Integration
+- [x] ✅ **MEDIUM**: Built WordCustomizer for $5 tier
+- [x] ✅ **MEDIUM**: Created CustomizationFlow interface
+- [x] ✅ **MEDIUM**: Connected custom tier to WordCustomizer component
+- [x] ✅ **MEDIUM**: Added customization state management
+
+### 5.4 Modified Components for Hybrid Flow
+- [x] ✅ **HIGH**: Updated MintingDialog to handle both pricing tiers
+- [x] ✅ **HIGH**: Added tier selection and custom upgrade functionality
+- [x] ✅ **HIGH**: Updated AlphabetGenerator with proper flow integration
+- [x] ✅ **MEDIUM**: Updated app state management for hybrid pricing
+
+---
+
+## ✅ Phase 6: Real NFT Data Integration (COMPLETE)
+
+### 6.1 Blockchain Data Loading
+- [x] ✅ **CRITICAL**: Real NFT collection data loading from Base mainnet
+- [x] ✅ **CRITICAL**: getUserNFTCollections() function working perfectly
+- [x] ✅ **CRITICAL**: Contract integration with AlphabetAffirmationsNFTV2
+- [x] ✅ **CRITICAL**: Automatic wallet connection via MiniKitProvider
+- [x] ✅ **HIGH**: Successfully loading 9 real NFT collections from blockchain
+
+### 6.2 Data Conversion & Display
+- [x] ✅ **HIGH**: NFTCollection to Collection format conversion
+- [x] ✅ **HIGH**: Real affirmation data (26 letters A-Z) displayed in reader
+- [x] ✅ **HIGH**: Collection metadata (child name, mint date, tier info)
+- [x] ✅ **HIGH**: Thumbnail letters properly displayed as single letters
+- [x] ✅ **MEDIUM**: Fixed circular letter badge overflow issue
+
+### 6.3 User Experience Integration
+- [x] ✅ **HIGH**: Library view shows real minted NFTs (Quinn, Emma, Ashley, Leo)
+- [x] ✅ **HIGH**: Reader opens real NFT data (tested with Leo's 26 affirmations)
+- [x] ✅ **HIGH**: Seamless navigation between generated and minted collections
+- [x] ✅ **MEDIUM**: Loading states during blockchain data fetching
+- [x] ✅ **MEDIUM**: Error handling for failed NFT loading
+
+### 6.4 Authentication & Wallet Integration
+- [x] ✅ **HIGH**: Farcaster authentication working automatically
+- [x] ✅ **HIGH**: Wallet connection via MiniKit (address: 0x626522B58b92dAF53596F1378bd25B7653c1fC49)
+- [x] ✅ **HIGH**: User profile integration (username, avatar, FID)
+- [x] ✅ **MEDIUM**: Session management and persistence
+
+---
+
 ## 🚀 **STRATEGIC PIVOT: Hybrid Pricing Model Implementation**
 
 **Major Strategic Change:** Moving from single $5 tier to hybrid two-tier pricing model with name-first psychology.
@@ -440,22 +502,56 @@ Educational alphabet affirmations miniapp using MiniKit - teaches ABCs while bui
 - ✅ **Seamless user experience** with instant generation
 - ✅ **Full app functionality** - create, reroll, read, save collections
 
-**Updated Critical Gaps:**
-- ❌ **NFT contract needs V2 for hybrid pricing** - Two-tier pricing structure
-- ❌ **Name-first user flow** - Child's letters prominent, then conversion
-- ❌ **Real blockchain transactions** - Still simulated minting
-- ❌ **Customization interface** - For $5 tier word selection
+**Current Status - What's Working:**
+- ✅ **NFT contract V2 deployed** - Two-tier pricing structure on Base mainnet
+- ✅ **Hybrid pricing modal** - $0.99 vs $5 choice interface working
+- ✅ **Real blockchain data loading** - 9 NFT collections loaded successfully
+- ✅ **Customization interface** - WordCustomizer integrated for $5 tier
+- ✅ **Wallet connection** - MiniKit automatically connects user wallet
+- ✅ **Collection display** - Fixed circular badge overflow, real data shown
 
-**Updated Next Steps:**
-1. **Deploy NFT Contract V2** - Two-tier pricing + customization tracking
-2. **Build name-first preview** - Child's letters prominent display
-3. **Create hybrid pricing modal** - $0.99 vs $5 choice interface
-4. **OnchainKit wallet connection** - Real blockchain transactions
-5. **Customization flow** - Word selection for premium tier
+**Remaining Critical Gaps:**
+- ❌ **Real blockchain minting** - Still simulated, needs OnchainKit Transaction component
+- ❌ **Name-first user flow** - Child's letters prominent preview (optional enhancement)
+- ❌ **Transaction error handling** - Robust error states for failed mints
+
+**Next Steps Priority:**
+1. **Implement real blockchain minting** - Replace simulated minting with OnchainKit Transaction
+2. **Test minting flow end-to-end** - Both $0.99 and $5.00 tiers on Base mainnet  
+3. **Add transaction error handling** - Handle failed transactions gracefully
+4. **Optional: Name-first preview** - Show child's letters prominently before full alphabet
 
 ---
 
-## 🚀 **Phase 2: Optional Future Features (Post-MVP)**
+## 🎯 Phase 7: Real Blockchain Minting (CURRENT PRIORITY)
+
+### 7.1 OnchainKit Transaction Integration
+- [ ] 📝 **CRITICAL**: Replace simulated minting with OnchainKit Transaction component
+- [ ] 📝 **CRITICAL**: Configure Transaction component for both pricing tiers ($0.99 / $5.00)
+- [ ] 📝 **CRITICAL**: Connect to AlphabetAffirmationsNFTV2 contract on Base mainnet
+- [ ] 📝 **HIGH**: Add proper transaction parameters (childName, words array, tier, etc.)
+
+### 7.2 Minting Flow Integration
+- [ ] 📝 **HIGH**: Update MintingDialog to use real transactions instead of simulation
+- [ ] 📝 **HIGH**: Handle transaction success/failure states properly
+- [ ] 📝 **HIGH**: Refresh NFT collection data after successful mint
+- [ ] 📝 **MEDIUM**: Add transaction hash display and Base block explorer links
+
+### 7.3 Error Handling & UX
+- [ ] 📝 **HIGH**: Robust error handling for failed transactions
+- [ ] 📝 **HIGH**: User-friendly error messages for common failures
+- [ ] 📝 **MEDIUM**: Gas estimation and transaction preview
+- [ ] 📝 **MEDIUM**: Loading states during transaction processing
+
+### 7.4 Testing & Validation
+- [ ] 📝 **CRITICAL**: Test $0.99 random tier minting end-to-end
+- [ ] 📝 **CRITICAL**: Test $5.00 custom tier minting end-to-end  
+- [ ] 📝 **HIGH**: Verify minted NFTs appear in library immediately
+- [ ] 📝 **HIGH**: Test transaction failures and error recovery
+
+---
+
+## 🚀 **Phase 8: Optional Future Features (Post-MVP)**
 
 ### **Collection Management Enhancements**
 - [ ] 📝 Add delete button for collection view

@@ -173,7 +173,7 @@ export default function AlphabetAffirmations() {
           mintDate: nft.mintDate,
           createdAt: nft.mintDate, // Use mintDate as createdAt
           letterCount: nft.letterCount,
-          thumbnailLetters: nft.thumbnailLetters.map(t => t.word),
+          thumbnailLetters: nft.thumbnailLetters.map(t => t.letter),
           fid: farcasterProfile.fid || 0,
         }))
         setCollections(convertedCollections)
@@ -310,7 +310,7 @@ export default function AlphabetAffirmations() {
           mintDate: nft.mintDate,
           createdAt: nft.mintDate, // Use mintDate as createdAt
           letterCount: nft.letterCount,
-          thumbnailLetters: nft.thumbnailLetters.map(t => t.word),
+          thumbnailLetters: nft.thumbnailLetters.map(t => t.letter),
           fid: farcasterProfile.fid || 0,
         }))
         setCollections(convertedCollections)
