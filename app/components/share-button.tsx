@@ -38,9 +38,17 @@ export function ShareButton({ childName, variant, isSharing = false, onShare, cl
       // Use Farcaster's compose URL - most reliable for MiniApps
       const farcasterUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=${embedUrl}`
       
-      // Open in new tab/window
+      // Mobile-friendly sharing - detect mobile and use different approach
       if (typeof window !== "undefined") {
-        window.open(farcasterUrl, '_blank', 'noopener,noreferrer')
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        
+        if (isMobile) {
+          // On mobile, navigate in same window to avoid disrupting MiniApp flow
+          window.location.href = farcasterUrl
+        } else {
+          // On desktop, open in new tab
+          window.open(farcasterUrl, '_blank', 'noopener,noreferrer')
+        }
       }
       
       onShare()
