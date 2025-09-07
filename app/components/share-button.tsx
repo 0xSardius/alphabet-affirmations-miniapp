@@ -32,19 +32,17 @@ export function ShareButton({ childName, variant, isSharing = false, onShare, cl
     if (isSharing) return
 
     try {
-      // Farcaster share via postMessage
-      if (typeof window !== "undefined" && window.parent) {
-        window.parent.postMessage(
-          {
-            type: "createCast",
-            data: {
-              text: getShareText(),
-              embeds: [window.location.href],
-            },
-          },
-          "*",
-        )
+      const shareText = encodeURIComponent(getShareText())
+      const embedUrl = encodeURIComponent(window.location.origin)
+      
+      // Use Farcaster's compose URL - most reliable for MiniApps
+      const farcasterUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=${embedUrl}`
+      
+      // Open in new tab/window
+      if (typeof window !== "undefined") {
+        window.open(farcasterUrl, '_blank', 'noopener,noreferrer')
       }
+      
       onShare()
     } catch (error) {
       console.error("Failed to share:", error)
