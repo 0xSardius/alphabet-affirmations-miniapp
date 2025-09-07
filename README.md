@@ -1,112 +1,190 @@
-# MiniKit Template
+# 🎯 Alphabet Affirmations MiniApp
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](), configured with:
+> **Create personalized alphabet affirmations for your child and mint them as NFTs on Base**
 
-- [MiniKit](https://docs.base.org/builderkits/minikit/overview)
-- [OnchainKit](https://www.base.org/builders/onchainkit)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Next.js](https://nextjs.org/docs)
+A Farcaster MiniApp that generates beautiful, personalized alphabet affirmations like "Emma is Amazing, Brilliant, Creative..." and lets parents mint them as permanent keepsakes on the blockchain.
 
-## Getting Started
+## ✨ What It Does
 
-1. Install dependencies:
-```bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-# or
-bun install
+**For Parents:**
+- Generate personalized A-Z affirmations for your child
+- Choose between random ($0.99) or custom ($5.00) word selections
+- Mint as NFTs on Base for permanent keepsake value
+- Read affirmations together as interactive bedtime stories
+- Share your child's alphabet with the Farcaster community
+
+**For Children:**
+- See their name in beautiful, positive affirmations
+- Learn letters through personalized, meaningful words
+- Build confidence with daily positive reinforcement
+- Create lasting memories with parents
+
+## 🚀 Live Demo
+
+Try it now on Farcaster: [Alphabet Affirmations MiniApp](https://your-domain.com)
+
+## 🎯 Key Features
+
+### 🔮 **Smart Generation**
+- Deterministic word generation based on child's name + Farcaster ID
+- Consistent results - same name always gets same words
+- Reroll functionality for trying different combinations
+
+### 💎 **Two-Tier Pricing**
+- **Random Tier ($0.99)**: Get a beautiful random alphabet
+- **Custom Tier ($5.00)**: Personalize specific words for your child
+
+### 🎨 **Beautiful UI/UX**
+- Clean, mobile-first design optimized for Farcaster
+- Interactive reading experience with letter-by-letter reveal
+- Smooth animations and micro-interactions
+
+### ⛓️ **Real Blockchain Integration**
+- Mint NFTs on Base mainnet using real ETH
+- Load existing collections from your wallet
+- Permanent ownership and transferability
+
+### 📚 **Reading Experience**
+- Interactive story mode for bedtime reading
+- Progress tracking through the alphabet
+- Shareable moments and milestones
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Framer Motion** - Smooth animations
+
+### **Blockchain**
+- **Base (Ethereum L2)** - Low-cost, fast transactions
+- **Wagmi** - React hooks for Ethereum
+- **Viem** - TypeScript Ethereum library
+- **Custom NFT Contract** - AlphabetAffirmationsNFTV2
+
+### **Farcaster Integration**
+- **MiniKit** - Farcaster MiniApp framework
+- **OnchainKit** - Coinbase's Web3 toolkit
+- **Farcaster Auth** - Seamless user authentication
+
+### **Infrastructure**
+- **Vercel** - Deployment and hosting
+- **Redis** - Caching and session management
+- **IPFS** - Decentralized metadata storage
+
+## 📁 Project Structure
+
+```
+alphabet-affirmations-miniapp/
+├── app/                          # Next.js App Router
+│   ├── components/               # React components
+│   │   ├── alphabet-generator.tsx
+│   │   ├── hybrid-pricing-modal.tsx
+│   │   ├── word-customizer.tsx
+│   │   ├── minting-dialog.tsx
+│   │   └── ...
+│   ├── api/                      # API routes
+│   │   ├── notify/
+│   │   └── webhook/
+│   └── documentation/            # Project docs
+├── lib/                          # Utilities and data
+│   ├── data/word-bank.ts        # Affirmation words
+│   ├── contracts/               # Smart contract ABIs
+│   ├── constants/               # App constants
+│   └── utils/                   # Helper functions
+├── contracts/                    # Smart contracts (Foundry)
+│   ├── src/AlphabetAffirmationsNFTV2.sol
+│   └── script/                  # Deploy scripts
+└── public/                      # Static assets
 ```
 
-2. Verify environment variables, these will be set up by the `npx create-onchain --mini` command:
+## 🚀 Getting Started
 
-You can regenerate the FARCASTER Account Association environment variables by running `npx create-onchain --manifest` in your project directory.
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Farcaster account for testing
 
-The environment variables enable the following features:
+### Installation
 
-- Frame metadata - Sets up the Frame Embed that will be shown when you cast your frame
-- Account association - Allows users to add your frame to their account, enables notifications
-- Redis API keys - Enable Webhooks and background notifications for your application by storing users notification details
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/alphabet-affirmations-miniapp
+   cd alphabet-affirmations-miniapp
+   ```
 
-```bash
-# Shared/OnchainKit variables
-NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=
-NEXT_PUBLIC_URL=
-NEXT_PUBLIC_ICON_URL=
-NEXT_PUBLIC_ONCHAINKIT_API_KEY=
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Frame metadata
-FARCASTER_HEADER=
-FARCASTER_PAYLOAD=
-FARCASTER_SIGNATURE=
-NEXT_PUBLIC_APP_ICON=
-NEXT_PUBLIC_APP_SUBTITLE=
-NEXT_PUBLIC_APP_DESCRIPTION=
-NEXT_PUBLIC_APP_SPLASH_IMAGE=
-NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR=
-NEXT_PUBLIC_APP_PRIMARY_CATEGORY=
-NEXT_PUBLIC_APP_HERO_IMAGE=
-NEXT_PUBLIC_APP_TAGLINE=
-NEXT_PUBLIC_APP_OG_TITLE=
-NEXT_PUBLIC_APP_OG_DESCRIPTION=
-NEXT_PUBLIC_APP_OG_IMAGE=
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Fill in your environment variables:
+   ```env
+   NEXT_PUBLIC_MINIKIT_PROJECT_ID=your_minikit_project_id
+   REDIS_URL=your_redis_url
+   NEYNAR_API_KEY=your_neynar_key
+   ```
 
-# Redis config
-REDIS_URL=
-REDIS_TOKEN=
-```
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+5. **Open in Farcaster**
+   - Use a Farcaster client that supports MiniApps
+   - Navigate to `http://localhost:3000`
 
-## Template Features
+## 🔧 Smart Contract
 
-### Frame Configuration
-- `.well-known/farcaster.json` endpoint configured for Frame metadata and account association
-- Frame metadata automatically added to page headers in `layout.tsx`
+The NFT contract (`AlphabetAffirmationsNFTV2`) supports:
+- Two-tier pricing (random vs custom)
+- Customization tracking
+- Metadata storage
+- Standard ERC-721 functionality
 
-### Background Notifications
-- Redis-backed notification system using Upstash
-- Ready-to-use notification endpoints in `api/notify` and `api/webhook`
-- Notification client utilities in `lib/notification-client.ts`
+### Contract Addresses
+- **Base Mainnet**: `0x...` (deployed)
+- **Base Sepolia**: `0x...` (testnet)
 
-### Theming
-- Custom theme defined in `theme.css` with OnchainKit variables
-- Pixel font integration with Pixelify Sans
-- Dark/light mode support through OnchainKit
+## 📊 Usage Analytics
 
-### MiniKit Provider
-The app is wrapped with `MiniKitProvider` in `providers.tsx`, configured with:
-- OnchainKit integration
-- Access to Frames context
-- Sets up Wagmi Connectors
-- Sets up Frame SDK listeners
-- Applies Safe Area Insets
+Track key metrics:
+- Alphabets generated
+- NFTs minted by tier
+- User engagement and retention
+- Revenue by pricing tier
 
-## Customization
+## 🤝 Contributing
 
-To get started building your own frame, follow these steps:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-1. Remove the DemoComponents:
-   - Delete `components/DemoComponents.tsx`
-   - Remove demo-related imports from `page.tsx`
+## 📄 License
 
-2. Start building your Frame:
-   - Modify `page.tsx` to create your Frame UI
-   - Update theme variables in `theme.css`
-   - Adjust MiniKit configuration in `providers.tsx`
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-3. Add your frame to your account:
-   - Cast your frame to see it in action
-   - Share your frame with others to start building your community
+## 🙏 Acknowledgments
 
-## Learn More
+- **Farcaster** - For the amazing MiniApp platform
+- **Base** - For low-cost, fast blockchain infrastructure
+- **OnchainKit** - For seamless Web3 integration
+- **Parents everywhere** - For inspiring positive affirmations for children
 
-- [MiniKit Documentation](https://docs.base.org/builderkits/minikit/overview)
-- [OnchainKit Documentation](https://docs.base.org/builderkits/onchainkit/getting-started)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+## 📞 Support
+
+- **Documentation**: Check `/app/documentation/` for detailed guides
+- **Issues**: Open a GitHub issue for bugs or feature requests
+- **Community**: Join the discussion on Farcaster
+
+---
+
+**Built with ❤️ for parents who want to create lasting, positive memories with their children.**
