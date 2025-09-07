@@ -55,7 +55,7 @@ const getAlternativeWords = (letter: string): string[] => {
     'V': ['Valuable', 'Vibrant', 'Victorious', 'Vivacious', 'Virtuous', 'Visionary'],
     'W': ['Wonderful', 'Wise', 'Witty', 'Warm', 'Worthy', 'Wholesome'],
     'X': ['eXtraordinary', 'eXcellent', 'eXciting', 'eXpressive', 'eXceptional', 'eXuberant'],
-    'Y': ['Young', 'Youthful', 'Yearning', 'Yes-person', 'Yielding', 'Yummy'],
+    'Y': ['Young', 'Youthful', 'Yearning', 'Yes-person', 'Yielding', 'Yippee'],
     'Z': ['Zealous', 'Zestful', 'Zippy', 'Zen', 'Zany', 'Zingy']
   }
   

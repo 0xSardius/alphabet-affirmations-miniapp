@@ -74,6 +74,11 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsRead
       // Extract name letters (first letters of child name)
       const nameLetters = childName.toUpperCase().split('').slice(0, 10).join('') // Max 10 letters
       
+      // For custom tier, identify which letters were customized
+      const customizedLetters = tier === "custom" 
+        ? affirmations.filter(a => a.word !== `${a.letter.toUpperCase()}mazing`).map(a => a.letter.toUpperCase())
+        : []
+
       // Call the contract mint function
       writeContract({
         address: CONTRACTS.ALPHABET_NFT_V2.address as `0x${string}`,
@@ -84,7 +89,7 @@ export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsRead
           words, // string[26] calldata words
           `https://example.com/metadata/${childName}`, // string calldata metadataURI
           tier === "random" ? 0 : 1, // MintTier tier
-          [], // string[] calldata customizedLetters - empty for random tier
+          customizedLetters, // string[] calldata customizedLetters
           nameLetters // string calldata nameLetters
         ],
         value: parseEther(mintPrice),
