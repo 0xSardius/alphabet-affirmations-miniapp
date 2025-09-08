@@ -2,6 +2,7 @@
 
 import { Baby } from "lucide-react"
 import { Button } from "./button"
+import { FAQSection } from "./faq-section"
 import { cn } from "@/lib/utils"
 
 interface HomeViewProps {
@@ -44,6 +45,11 @@ export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProp
         <Button variant="secondary" size="lg" onClick={onViewLibrary} className="w-full">
           Read My Collection
         </Button>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="mt-8 w-full max-w-sm">
+        <FAQSection />
       </div>
     </div>
   )
