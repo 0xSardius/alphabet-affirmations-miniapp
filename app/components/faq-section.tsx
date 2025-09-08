@@ -19,8 +19,8 @@ const faqData: FAQItem[] = [
     answer: "Each alphabet is uniquely generated based on your child's name and your Farcaster identity - no two are exactly alike!"
   },
   {
-    question: "What's the difference between $0.99 and $5.00?",
-    answer: "$0.99 gets you a beautiful random alphabet. $5.00 lets you customize specific words before minting (like changing 'Quirky' to 'Quiet')."
+    question: "What's the difference between price tiers?",
+    answer: "Random tier gets you a beautiful generated alphabet. Custom tier lets you personalize specific words before minting (like changing 'Quirky' to 'Quiet')."
   },
   {
     question: "What do I get when I mint?",
