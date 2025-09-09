@@ -276,13 +276,6 @@ export default function AlphabetAffirmations() {
     setShowHybridPricingModal(true) // Return to pricing modal
   }
 
-  // Handler for custom upgrade upsell
-  const handleCustomUpgrade = () => {
-    setShowMintingDialog(false)
-    setSelectedMintTier("custom")
-    setCustomizedAffirmations(generatedAffirmations) // Start with current affirmations
-    setShowWordCustomizer(true)
-  }
 
   // Handler for completed minting
   const handleMintingComplete = async () => {

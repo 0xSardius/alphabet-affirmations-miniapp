@@ -8,7 +8,7 @@ import { PartialPreview } from "./partial-preview"
 import { PreviewSkeleton } from "./preview-skeleton"
 import { MintingDialog } from "./minting-dialog"
 import { Header } from "./header"
-import { generateConsistentAlphabet, generateTrulyRandomAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
+import { generateConsistentAlphabet } from "../../lib/data/word-bank"
 
 type Affirmation = {
   letter: string
