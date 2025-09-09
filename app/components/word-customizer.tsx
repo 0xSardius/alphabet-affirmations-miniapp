@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Button } from "./button"
 import { Card } from "./card"
-import { Header } from "./header"
 import { cn } from "@/lib/utils"
 
 interface Affirmation {
@@ -176,7 +175,7 @@ export function WordCustomizer({
       <Card className="max-w-md w-full space-y-6 max-h-[80vh] overflow-y-auto">
         <div className="text-center space-y-2">
           <h1 className="text-xl font-serif font-bold text-white">
-            Make {childName}'s Alphabet Perfect
+            Make {childName}&apos;s Alphabet Perfect
           </h1>
           <p className="text-sm text-gray-400 font-sans">
             Tap any word to change it

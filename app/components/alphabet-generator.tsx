@@ -8,7 +8,7 @@ import { PartialPreview } from "./partial-preview"
 import { PreviewSkeleton } from "./preview-skeleton"
 import { MintingDialog } from "./minting-dialog"
 import { Header } from "./header"
-import { generateRandomAlphabet, generateConsistentAlphabet, generateTrulyRandomAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
+import { generateConsistentAlphabet, generateTrulyRandomAlphabet, getRandomWordForLetter } from "../../lib/data/word-bank"
 
 type Affirmation = {
   letter: string
@@ -228,27 +228,6 @@ export function AlphabetGenerator({ onComplete, initialChildName }: AlphabetGene
     }
   }
 
-  // Word regeneration functionality
-  const regenerateWord = (letter: string) => {
-    const newWord = getRandomWordForLetter(letter)
-    setAffirmations(prev => 
-      prev.map(affirmation => 
-        affirmation.letter === letter 
-          ? { ...affirmation, word: newWord }
-          : affirmation
-      )
-    )
-  }
-
-  const regenerateAllWords = () => {
-    // Use truly random generation for immediate variation
-    const newWords = generateTrulyRandomAlphabet()
-    const newAffirmations: Affirmation[] = Object.entries(newWords).map(([letter, word]) => ({
-      letter,
-      word
-    }))
-    setAffirmations(newAffirmations)
-  }
 
   const handleBack = () => {
     setState("input")

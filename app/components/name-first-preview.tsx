@@ -45,7 +45,7 @@ export function NameFirstPreview({
           {/* Header Section */}
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-serif font-bold text-white">
-              {childName}'s Special Words
+              {childName}&apos;s Special Words
             </h1>
             <div className="text-lg">⭐ Ready! ⭐</div>
           </div>
@@ -100,7 +100,7 @@ export function NameFirstPreview({
               onClick={onStartReading}
               className="w-full py-4 text-lg font-bold hover:scale-[1.02] transition-transform duration-200"
             >
-              Experience {childName}'s Complete Bedtime Alphabet
+              Experience {childName}&apos;s Complete Bedtime Alphabet
             </Button>
           </div>
 

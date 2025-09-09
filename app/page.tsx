@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { useMiniKit, useAuthenticate } from "@coinbase/onchainkit/minikit"
 import { useAccount } from "wagmi"
-import { Collection, createCollectionFromAffirmations } from "../lib/storage/collections"
-import { getUserNFTCollections, NFTCollection } from "../lib/nft-data"
+import { Collection } from "../lib/storage/collections"
+import { getUserNFTCollections } from "../lib/nft-data"
 import { HomeView } from "./components/home-view"
 import { LibraryView } from "./components/library-view"
 import { ReaderPage } from "./components/reader-page"
@@ -12,8 +12,6 @@ import { AffirmationCard } from "./components/affirmation-card"
 import { Button } from "./components/button"
 import { Card } from "./components/card"
 import { Header } from "./components/header"
-import { ShareButton } from "./components/share-button"
-import { AddMiniAppBanner } from "./components/add-miniapp-banner"
 import { AuthFallback } from "./components/auth-fallback"
 import { AlphabetGenerator } from "./components/alphabet-generator"
 import { MiniKitLoadingScreen } from "./components/minikit-loading-screen"
@@ -61,14 +59,12 @@ type GeneratedAffirmation = {
 export default function AlphabetAffirmations() {
   const { setFrameReady, isFrameReady, context } = useMiniKit()
   const { signIn } = useAuthenticate()
-  const { address: walletAddress, isConnected: isWalletConnected } = useAccount()
+  const { address: walletAddress } = useAccount()
   
   const [currentView, setCurrentView] = useState<View>("home")
   const [childName, setChildName] = useState("")
   const [currentLetter, setCurrentLetter] = useState(0)
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null)
-  const [isMiniAppAdded, setIsMiniAppAdded] = useState(false)
-  const [showAddBanner, setShowAddBanner] = useState(true)
   const [showAuthFallback, setShowAuthFallback] = useState(false)
   const [showMintingDialog, setShowMintingDialog] = useState(false)
   const [showHybridPricingModal, setShowHybridPricingModal] = useState(false)
@@ -201,10 +197,6 @@ export default function AlphabetAffirmations() {
     setGeneratedAffirmations([]) // Clear any existing generated affirmations
   }
 
-  const handleStartReading = () => {
-    setCurrentLetter(0)
-    setCurrentView("reader")
-  }
 
   const handleNext = () => {
     if (currentLetter < currentAffirmations.length - 1) {
@@ -461,7 +453,6 @@ export default function AlphabetAffirmations() {
           onMint={handleMintingComplete}
           onViewAsReading={handleViewAsReading}
           tier={selectedMintTier}
-          onCustomUpgrade={handleCustomUpgrade}
           affirmations={generatedAffirmations}
         />
 

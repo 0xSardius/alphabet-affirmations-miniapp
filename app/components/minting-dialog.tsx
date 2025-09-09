@@ -19,12 +19,11 @@ interface MintingDialogProps {
   onMint: () => void
   onViewAsReading?: () => void // New callback for "View as Reading"
   tier?: "random" | "custom"
-  onCustomUpgrade?: () => void // New callback for upsell
   affirmations?: { letter: string; word: string }[] // Actual affirmations to mint
   className?: string
 }
 
-export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsReading, tier = "random", onCustomUpgrade, affirmations = [], className }: MintingDialogProps) {
+export function MintingDialog({ childName, isOpen, onClose, onMint, onViewAsReading, tier = "random", affirmations = [], className }: MintingDialogProps) {
   const [mintingState, setMintingState] = useState<"idle" | "minting" | "success" | "error">("idle")
   
   // Wagmi hooks for blockchain interaction

@@ -12,7 +12,7 @@ interface WalletStatusChipProps {
   className?: string
 }
 
-export function WalletStatusChip({ status, address, balance, onRetry, className }: WalletStatusChipProps) {
+export function WalletStatusChip({ status, address, onRetry, className }: WalletStatusChipProps) {
   const getStatusContent = () => {
     switch (status) {
       case "connected":
