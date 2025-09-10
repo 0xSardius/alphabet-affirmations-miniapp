@@ -3,6 +3,9 @@
 import { Baby } from "lucide-react"
 import { Button } from "./button"
 import { FAQSection } from "./faq-section"
+import { AddMiniAppBanner } from "./add-miniapp-banner"
+import { useAddFrame } from "@coinbase/onchainkit/minikit"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 interface HomeViewProps {
@@ -12,6 +15,18 @@ interface HomeViewProps {
 }
 
 export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProps) {
+  const [isAdded, setIsAdded] = useState(false)
+  const [showBanner, setShowBanner] = useState(true)
+  const addFrame = useAddFrame()
+
+  const handleAddFrame = async () => {
+    const result = await addFrame()
+    if (result) {
+      setIsAdded(true)
+      console.log('Frame added:', result.url, result.token)
+    }
+  }
+
   return (
     <div
       className={cn(
@@ -35,6 +50,17 @@ export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProp
           Educational alphabet that teaches ABCs while building confidence
         </p>
       </div>
+
+      {/* Add Frame Banner */}
+      {showBanner && (
+        <div className="w-full max-w-sm mb-6">
+          <AddMiniAppBanner
+            isAdded={isAdded}
+            onAdd={handleAddFrame}
+            onDismiss={() => setShowBanner(false)}
+          />
+        </div>
+      )}
 
       {/* Actions */}
       <div className="space-y-4 w-full max-w-sm">
