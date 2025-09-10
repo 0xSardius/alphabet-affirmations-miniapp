@@ -5,7 +5,7 @@ import { Button } from "./button"
 import { FAQSection } from "./faq-section"
 import { AddMiniAppBanner } from "./add-miniapp-banner"
 import { useAddFrame } from "@coinbase/onchainkit/minikit"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 
 interface HomeViewProps {
@@ -17,6 +17,7 @@ interface HomeViewProps {
 export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProps) {
   const [isAdded, setIsAdded] = useState(false)
   const [showBanner, setShowBanner] = useState(true)
+  const [hasTriggeredAutoAdd, setHasTriggeredAutoAdd] = useState(false)
   const addFrame = useAddFrame()
 
   const handleAddFrame = async () => {
@@ -26,6 +27,22 @@ export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProp
       console.log('Frame added:', result.url, result.token)
     }
   }
+
+  // Automatically trigger add frame modal on first visit
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('alphabet-affirmations-visited')
+    
+    if (!hasVisited && !hasTriggeredAutoAdd && !isAdded) {
+      // Mark as visited to prevent future auto-triggers
+      localStorage.setItem('alphabet-affirmations-visited', 'true')
+      setHasTriggeredAutoAdd(true)
+      
+      // Small delay to ensure component is fully mounted
+      setTimeout(() => {
+        handleAddFrame()
+      }, 500)
+    }
+  }, [hasTriggeredAutoAdd, isAdded])
 
   return (
     <div
@@ -51,8 +68,8 @@ export function HomeView({ onCreateNew, onViewLibrary, className }: HomeViewProp
         </p>
       </div>
 
-      {/* Add Frame Banner */}
-      {showBanner && (
+      {/* Add Frame Banner - Only show if user manually dismissed the auto-modal or if already added */}
+      {showBanner && (hasTriggeredAutoAdd || isAdded) && (
         <div className="w-full max-w-sm mb-6">
           <AddMiniAppBanner
             isAdded={isAdded}
