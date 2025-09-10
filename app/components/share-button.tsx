@@ -2,6 +2,7 @@
 
 import { Share2, Loader2 } from "lucide-react"
 import { useState } from "react"
+import { useComposeCast } from "@coinbase/onchainkit/minikit"
 import { cn } from "@/lib/utils"
 
 interface ShareButtonProps {
@@ -14,6 +15,7 @@ interface ShareButtonProps {
 
 export function ShareButton({ childName, variant, isSharing = false, onShare, className }: ShareButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const { composeCast } = useComposeCast()
 
   const getShareText = () => {
     switch (variant) {
@@ -32,24 +34,11 @@ export function ShareButton({ childName, variant, isSharing = false, onShare, cl
     if (isSharing) return
 
     try {
-      const shareText = encodeURIComponent(getShareText())
-      const embedUrl = encodeURIComponent(window.location.origin)
-      
-      // Use Farcaster's compose URL - most reliable for MiniApps
-      const farcasterUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=${embedUrl}`
-      
-      // Mobile-friendly sharing - detect mobile and use different approach
-      if (typeof window !== "undefined") {
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-        
-        if (isMobile) {
-          // On mobile, navigate in same window to avoid disrupting MiniApp flow
-          window.location.href = farcasterUrl
-        } else {
-          // On desktop, open in new tab
-          window.open(farcasterUrl, '_blank', 'noopener,noreferrer')
-        }
-      }
+      // Use MiniKit's composeCast hook for proper in-app sharing
+      composeCast({
+        text: getShareText(),
+        embeds: [window.location.origin]
+      })
       
       onShare()
     } catch (error) {
