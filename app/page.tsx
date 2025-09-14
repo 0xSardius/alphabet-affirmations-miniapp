@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useMiniKit, useAuthenticate } from "@coinbase/onchainkit/minikit"
+import { useMiniKit } from "@coinbase/onchainkit/minikit"
 import { useAccount } from "wagmi"
 import { Collection } from "../lib/storage/collections"
 import { getUserNFTCollections } from "../lib/nft-data"
@@ -58,7 +58,6 @@ type GeneratedAffirmation = {
 
 export default function AlphabetAffirmations() {
   const { setFrameReady, isFrameReady, context } = useMiniKit()
-  const { signIn } = useAuthenticate()
   const { address: walletAddress } = useAccount()
   
   const [currentView, setCurrentView] = useState<View>("home")
@@ -86,12 +85,12 @@ export default function AlphabetAffirmations() {
     }
   }, [isFrameReady, setFrameReady])
 
-  // Automatic authentication when app loads
+  // Quick Auth - seamless authentication without prompts (replaces signIn())
   useEffect(() => {
-    const attemptAuthentication = async () => {
+    const attemptQuickAuth = async () => {
       // Check if user is already authenticated via context
       if (context?.user) {
-        console.log('✅ User already authenticated:', {
+        console.log('✅ User already authenticated via context:', {
           fid: context.user.fid,
           username: context.user.username,
           pfpUrl: context.user.pfpUrl
@@ -100,44 +99,48 @@ export default function AlphabetAffirmations() {
         return
       }
 
-      // If not authenticated and MiniKit is ready, attempt automatic sign-in
+      // If MiniKit is ready and no context user, try Quick Auth
       if (isFrameReady && !context?.user && !isAuthenticating) {
-        console.log('🔐 Starting automatic authentication...')
+        console.log('🔐 Attempting Quick Auth (no user prompts)...')
         setIsAuthenticating(true)
         setAuthError(null)
         
         try {
-          const result = await signIn()
-          console.log('🔐 Sign-in result:', result)
+          // Import SDK from the correct package
+          const { sdk } = await import('@farcaster/miniapp-sdk')
+          
+          // Try Quick Auth directly - it will fail gracefully if not supported
+          // Skip capability check since quickAuth.getToken isn't in the capability list yet
 
-          if (result) {
-            console.log('✅ Authentication successful')
-            // The context should update automatically, triggering a re-render
+          // Get Quick Auth token - this happens silently without user prompts!
+          const { token } = await sdk.quickAuth.getToken()
+          
+          if (token) {
+            console.log('✅ Quick Auth token obtained successfully (no prompts!)')
+            // Token is now available for authenticated requests
+            // The context should also be populated automatically
           } else {
-            console.warn('⚠️ Authentication returned no result')
-            // Don't set error immediately - context might still update
-            setTimeout(() => {
-              if (!context?.user) {
-                setAuthError('Please sign in to continue')
-              }
-            }, 2000)
+            console.log('⚠️ No Quick Auth token received')
           }
+          
         } catch (error) {
-          console.error('❌ Authentication error:', error)
-          setAuthError('Unable to authenticate. Please try again.')
+          console.error('❌ Quick Auth failed:', error)
+          // Don't show error to user - Quick Auth failure is not critical
+          // App can still function with basic features
+          console.log('📝 App will continue without authentication')
         } finally {
-          setTimeout(() => setIsAuthenticating(false), 1000) // Give context time to update
+          setIsAuthenticating(false)
         }
       }
     }
 
     // Only attempt authentication once MiniKit is ready
     if (isFrameReady) {
-      attemptAuthentication()
+      attemptQuickAuth()
     }
-  }, [isFrameReady, context?.user, signIn, isAuthenticating])
+  }, [isFrameReady, context?.user, isAuthenticating])
 
-  // Create profile object from real user data or fallback
+  // Create profile object from context data
   const farcasterProfile = {
     username: context?.user?.username || "user",
     avatarUrl: context?.user?.pfpUrl || "/placeholder.svg?height=24&width=24",

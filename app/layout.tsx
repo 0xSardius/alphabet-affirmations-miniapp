@@ -42,6 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Preconnect to Quick Auth server for better performance */}
+        <link rel="preconnect" href="https://auth.farcaster.xyz" />
+      </head>
       <body className="bg-background">
         <Providers>{children}</Providers>
       </body>
