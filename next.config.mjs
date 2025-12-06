@@ -6,6 +6,8 @@ const nextConfig = {
     config.externals.push("pino-pretty", "lokijs", "encoding");
     return config;
   },
+  // Turbopack config for Next.js 16
+  turbopack: {},
 };
 
 export default nextConfig;
